@@ -34,14 +34,15 @@ export default function Athletic() {
 
       <div className="container" style={{ position: 'relative', zIndex: 10 }}>
         {/* Header Tag & Title */}
-        <div style={{ textAlign: 'center', maxWidth: '48rem', margin: '0 auto 3rem auto' }}>
+        <div className="athletic-header-wrap">
           <div className="athletic-eyebrow">
             <span className="athletic-dot" />
             <span>{athleticContent.tag}</span>
           </div>
 
           <h2 className="athletic-main-title">
-            {athleticContent.title}
+            <span className="athletic-title-line">AQUÍ SE VIVE</span>
+            <span className="athletic-title-accent">EL ATHLETIC</span>
           </h2>
 
           <p className="athletic-subtitle">
@@ -91,19 +92,19 @@ export default function Athletic() {
                 type="button"
                 onClick={togglePlay}
                 className="athletic-play-toggle"
-                aria-label={isPlaying ? 'Pausar vídeo promocional' : 'Reproducir vídeo promocional'}
+                aria-label={isPlaying ? 'Pausar vídeo' : 'Reproducir vídeo'}
                 title={isPlaying ? 'Pausar vídeo' : 'Reproducir vídeo'}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                <span className="material-symbols-outlined athletic-play-icon">
                   {isPlaying ? 'pause' : 'play_arrow'}
                 </span>
-                <span style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em' }}>
+                <span className="athletic-play-label">
                   {isPlaying ? 'ANIMACIÓN ACTIVA' : 'REPRODUCIR'}
                 </span>
               </button>
             )}
 
-            {/* Integrated Overlay Banner */}
+            {/* Desktop Overlay Banner (hidden on mobile to prevent blocking composition) */}
             <div className="athletic-overlay-caption">
               <div className="athletic-caption-badge">
                 SAN MAMÉS · INDAUTXU
@@ -112,6 +113,16 @@ export default function Athletic() {
                 EL PARTIDO SE JUEGA EN LA CANCHA. LA EMOCIÓN SE COMPARTE EN LA BARRA.
               </h3>
             </div>
+          </div>
+
+          {/* Mobile Caption Banner (displayed directly below the video on mobile) */}
+          <div className="athletic-mobile-caption">
+            <span className="athletic-caption-badge">
+              SAN MAMÉS · INDAUTXU
+            </span>
+            <p className="athletic-mobile-caption-text">
+              El partido se juega en la cancha. La emoción se comparte en la barra.
+            </p>
           </div>
         </div>
 

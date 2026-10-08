@@ -255,30 +255,37 @@ export const galleryContent = {
   tag: "La Casa Por Dentro",
   title: "Dentro de Covent.",
   subtitle: "Un pub que se reconoce antes de sentarse.",
+  description: "Una taberna viva donde cada rincón guarda una historia, un partido o una conversación de barra.",
+  mainItem: {
+    src: "images/covent-interior.jpg",
+    alt: "Atmósfera central de Covent Garden Bilbao",
+    tag: "Atmósfera Central",
+    title: "Vigas centenarias y barra de caoba",
+  },
   items: [
     {
-      src: "images/covent-barra-pintxos-interior.jpg",
-      alt: "Ambiente interior y barra de Covent Garden",
-      tag: "El Pulso de Indautxu",
-      title: "Conversación de tarde y rondas compartidas",
-    },
-    {
-      src: "images/covent-barra-pintxos.jpg",
-      alt: "Barra repleta de pintxos",
-      tag: "Barra Viva",
-      title: "Pintxos frescos y cuadrillas",
-    },
-    {
-      src: "images/covent-hero.jpg",
-      alt: "Detalle de tiradores de cerveza",
-      tag: "La Casa",
-      title: "Orgullo de taberna de siempre",
-    },
-    {
       src: "images/covent-pared.jpg",
-      alt: "Cuadros y placas en la pared del pub",
-      tag: "Carácter Británico & Bilbaíno",
-      title: "El encanto de los rincones con solera",
+      alt: "Cuadros y memorabilia en las paredes de Covent Garden",
+      tag: "Memorabilia Tabernera",
+      title: "Paredes con historia británica & bilbaína",
+    },
+    {
+      src: "images/covent-barra-pintxos-interior.jpg",
+      alt: "Barra repleta de pintxos y ambiente interior",
+      tag: "El Pulso de Indautxu",
+      title: "Conversación de tarde y cuadrillas",
+    },
+    {
+      src: "images/covent-grifo-oro.jpg",
+      alt: "Tirador de bronce Grifo Oro Bilbao",
+      tag: "Tiradores de Bronce",
+      title: "Grifo Oro y el tiro de cerveza perfecto",
+    },
+    {
+      src: "images/covent-barra.jpg",
+      alt: "Botillería tradicional y barra principal",
+      tag: "La Botillería",
+      title: "El templo de Indautxu bajo luz cálida",
     },
   ],
 };
