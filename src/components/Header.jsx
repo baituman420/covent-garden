@@ -45,7 +45,7 @@ export default function Header({ isSubpage = false }) {
 
         {/* Action Button & Mobile Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <a href="#como-llegar" className="btn-primary">
+          <a href={isSubpage ? `${baseUrl}#como-llegar` : '#como-llegar'} className="btn-primary">
             CÓMO LLEGAR
           </a>
 

@@ -37,6 +37,15 @@ export default function GruposPage() {
     setFeedback('');
 
     try {
+      const isStaticHosting = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+      if (isStaticHosting) {
+        setStatus('error');
+        setFeedback(
+          'El formulario web está pendiente de activación en el servidor definitivo con backend PHP. Para gestionar tu solicitud de grupo o reservado de forma inmediata, por favor contáctanos por Instagram (@coventgarden_bilbao) o visítanos en Doctor Areilza 28.'
+        );
+        return;
+      }
+
       const response = await fetch(`${baseUrl}api/contact.php`, {
         method: 'POST',
         headers: {
@@ -67,13 +76,13 @@ export default function GruposPage() {
         setStatus('error');
         setFeedback(
           result.error ||
-            'Ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo más tarde o contáctanos por teléfono.'
+            'El servidor de correo no está disponible en este entorno. Por favor, contáctanos por Instagram (@coventgarden_bilbao) o visítanos en Doctor Areilza 28.'
         );
       }
     } catch (err) {
       setStatus('error');
       setFeedback(
-        'No se pudo conectar con el servidor. Por favor, comprueba tu conexión o visítanos en Doctor Areilza 28.'
+        'No se pudo conectar con el servidor de correo. Por favor, contáctanos directamente a través de Instagram (@coventgarden_bilbao) o visítanos en Doctor Areilza 28.'
       );
     }
   };
@@ -190,6 +199,41 @@ export default function GruposPage() {
                   Rellena los datos para que Josu pueda valorar tu petición y responderte con la mejor propuesta para tu cuadrilla o grupo.
                 </p>
               </div>
+
+              {/* Static Environment Notice (GitHub Pages) */}
+              {typeof window !== 'undefined' && window.location.hostname.includes('github.io') && (
+                <div
+                  style={{
+                    backgroundColor: 'rgba(247, 188, 96, 0.08)',
+                    border: '1px dashed rgba(247, 188, 96, 0.35)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '0.85rem 1rem',
+                    marginBottom: '1.5rem',
+                    fontSize: '0.825rem',
+                    color: 'var(--color-brass)',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.65rem',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--color-brass)', flexShrink: 0 }}>
+                    info
+                  </span>
+                  <div>
+                    <strong>Entorno de demostración (GitHub Pages estático):</strong> El procesamiento de reservas por formulario requiere backend PHP y se activará en el servidor definitivo. Para cualquier consulta inmediata o reserva, contáctanos a través de{' '}
+                    <a
+                      href={site.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: 'var(--color-cream)', textDecoration: 'underline' }}
+                    >
+                      Instagram (@coventgarden_bilbao)
+                    </a>{' '}
+                    o visítanos en Doctor Areilza 28.
+                  </div>
+                </div>
+              )}
 
               {/* Status Alert */}
               {status === 'success' && (

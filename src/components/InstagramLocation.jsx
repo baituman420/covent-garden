@@ -64,7 +64,7 @@ export default function InstagramLocation() {
 
                 {postSource === 'fallback' && (
                   <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-label)', letterSpacing: '0.08em', color: 'var(--color-text-dark-muted)', textTransform: 'uppercase' }}>
-                    Preintegración API
+                    Feed Curado · Preintegración Meta
                   </span>
                 )}
               </div>
@@ -143,7 +143,7 @@ export default function InstagramLocation() {
                           letterSpacing: '0.08em',
                         }}
                       >
-                        ÚLTIMO POST
+                        {postSource === 'meta_api' ? 'ÚLTIMO POST' : 'DESTACADO INSTAGRAM'}
                       </div>
                     </div>
 
