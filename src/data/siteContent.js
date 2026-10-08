@@ -22,10 +22,12 @@ export const instagram = {
 
 export const navigation = [
   { label: "EL PUB", href: "#el-pub" },
-  { label: "COMER & BEBER", href: "#comer-beber" },
-  { label: "DEPORTE", href: "#deporte" },
+  { label: "ESPECIALIDADES", href: "#especialidades" },
+  { label: "ATHLETIC", href: "#athletic" },
+  { label: "GRUPOS", href: "#grupos" },
+  { label: "LA BARRA", href: "#barra" },
   { label: "GALERÍA", href: "#galeria" },
-  { label: "INSTAGRAM", href: instagram.profile, external: true },
+  { label: "RESERVADOS", href: "grupos-reservados/", page: true },
 ];
 
 export const heroContent = {
@@ -116,43 +118,138 @@ export const barraContent = {
   },
 };
 
-export const deporteContent = {
-  tag: "LIVE SPORT · BILBAO",
-  title: "El partido se ve aquí.",
-  description: "En pantalla, con ambiente de barra y en pleno corazón de Indautxu. Especialmente cuando juega el Athletic Club.",
-  featuredMatch: {
-    tag: "PANTALLA GIGANTE",
-    badge: "SAN MAMÉS DIRECTO",
-    title: "Athletic Club en Pantalla Gigante",
-    desc: "Con ambiente de grada, previa de barra y espíritu rojiblanco.",
-  },
-  events: [
+export const especialidadesContent = {
+  tag: "La Cocina & El Picoteo",
+  title: "Especialidades de la Casa",
+  subtitle: "Sabor tabernero, producto fresco y raciones para compartir",
+  description: "Desde la tortilla recién cuajada hasta nuestros cachopos y hamburguesas, cada propuesta está pensada para acompañar la buena cerveza y la conversación de barra.",
+  disclaimer: "Selección orientativa sujeta a disponibilidad diaria en el local.",
+  items: [
     {
-      number: "01",
-      category: "FÚTBOL · LA LIGA & COPA",
-      title: "Athletic Club — Partidos Oficiales",
-      location: "Pantallas del Pub",
+      id: "tortilla",
+      title: "Tortilla de Patata",
+      subtitle: "Recién cuajada",
+      badge: "Insignia Covent",
+      image: "images/covent-tortilla.jpg",
+      description: "Jugosa, con cebolla confitada al punto y patata tierna. Horneada a diario para el desayuno y la ronda del mediodía.",
+      tag: "01 · TRADICIÓN",
     },
     {
-      number: "02",
-      category: "PREMIER LEAGUE",
-      title: "Fútbol Internacional & Pintas",
-      location: "Ambiente de Pub",
+      id: "pincho",
+      title: "Pintxos de Barra",
+      subtitle: "Variedad viva diaria",
+      badge: "Barra Indautxu",
+      image: "images/covent-pincho.jpg",
+      description: "Gildas clásicas, montaditos crujientes, cazuelitas calientes y bocados selectos sobre nuestra madera noble.",
+      tag: "02 · PICOTEO",
     },
     {
-      number: "03",
-      category: "RUGBY & SEIS NACIONES",
-      title: "Jornadas Internacionales de Rugby",
-      location: "Tercer Tiempo",
+      id: "burguer",
+      title: "Hamburguesas Artesanas",
+      subtitle: "Carne selecta & pan brioche",
+      badge: "Especial Cuadrilla",
+      image: "images/covent-burguer.webp",
+      description: "Carne picada de vacuno, queso fundido, vegetales frescos y salsas caseras. Sabor rotundo para compartir.",
+      tag: "03 · ARTESANA",
     },
     {
-      number: "04",
-      category: "GRANDES CITAS DEPORTIVAS",
-      title: "Eventos & Ligas Europeas",
-      location: "Retransmisión en Directo",
+      id: "cachopo",
+      title: "Cachopo Tabernero",
+      subtitle: "Crujiente y generoso",
+      badge: "Ración Caliente",
+      image: "images/covent-cachopo.jpg",
+      description: "Ternera tierna rellena de jamón ibérico y queso fundente, con empanado dorado recién frito.",
+      tag: "04 · GENEROSO",
+    },
+    {
+      id: "bocadillos",
+      title: "Bocadillos Tradicionales",
+      subtitle: "Pan rústico al momento",
+      badge: "Clásico de Pub",
+      image: "images/covent-bocata.jpeg",
+      description: "Rellenos nobles sobre pan crujiente y caliente. La pareja perfecta para una buena pinta británica o rubia local.",
+      tag: "05 · CRUJIENTE",
+    },
+    {
+      id: "sandwich",
+      title: "Sándwiches Especiales",
+      subtitle: "Tostados y equilibrados",
+      badge: "Pausa Tabernera",
+      image: "images/covent-sandwich.jpg",
+      description: "Combinaciones templadas con jamón, queso y aderezos especiales, preparados al instante para un tentempié ligero.",
+      tag: "06 · TOSTADO",
     },
   ],
 };
+
+export const athleticContent = {
+  tag: "SENTIMIENTO ZURIGORRI · INDAUTXU",
+  title: "Aquí se vive el Athletic",
+  subtitle: "75% Athletic · 25% Covent Garden",
+  description: "El rugido de San Mamés a un paso de Doctor Areilza. Pantallas gigantes, previas de barra, cuadrillas y ambiente de partido en cada jornada.",
+  crestImage: "images/athletic-escudo.png",
+  stadiumImage: "images/athletic/san-mames-night.jpg",
+  posterImage: "images/athletic/athletic-poster.jpg",
+  videoUrl: "video/athletic-promo.mp4",
+  features: [
+    {
+      number: "01",
+      title: "Pantalla & Sonido Envolvente",
+      desc: "Retransmisión de todos los partidos oficiales de LaLiga, Copa del Rey y competición europea.",
+      highlight: "Ambiente de Grada",
+    },
+    {
+      number: "02",
+      title: "La Previa de Doctor Areilza",
+      desc: "Cañas tiradas con esmero, pintxos recién salidos y cánticos rojiblancos antes del pitido inicial.",
+      highlight: "Tradición Zurigorri",
+    },
+    {
+      number: "03",
+      title: "Tercer Tiempo en el Pub",
+      desc: "El análisis de cada jugada entre amigos y la mejor selección de cervezas de barril para celebrar.",
+      highlight: "Pintas & Cuadrilla",
+    },
+  ],
+  callout: {
+    badge: "CALENDARIO & PREVIAS",
+    title: "¿Juega el Athletic hoy?",
+    desc: "En Covent Garden las puertas se abren con tiempo para coger sitio, pedir tu ronda y cantar el himno juntos.",
+    cta: "Consulta Próximos Partidos en Instagram",
+    link: instagram.profile,
+  },
+  disclaimer: "Covent Garden es un establecimiento hostelero independiente. Actividad no patrocinada ni vinculada contractualmente a la entidad oficial del club.",
+};
+
+export const gruposContent = {
+  tag: "ENCUENTROS & CELEBRACIONES",
+  title: "Grupos y Reservados",
+  subtitle: "Un pub auténtico para tus momentos especiales",
+  description: "Celebra cumpleaños, reuniones de cuadrilla, encuentros de empresa o previas de partido en Covent Garden. Disfruta de un ambiente tabernero único con el servicio cercano de Josu y su equipo.",
+  image: "images/covent-interior.jpg",
+  secondaryImage: "images/covent-pared.jpg",
+  cta: {
+    label: "SOLICITAR INFORMACIÓN",
+    href: "grupos-reservados/",
+  },
+  highlights: [
+    {
+      title: "Espacio Tabernero",
+      desc: "Madera oscura, bancadas corridas y la atmósfera inconfundible de un pub clásico en Doctor Areilza.",
+    },
+    {
+      title: "Picoteo & Bebidas a Medida",
+      desc: "Organiza bandejas de pintxos, tortillas recién hechas y rondas de cerveza según el tamaño de tu grupo.",
+    },
+    {
+      title: "Atención Directa",
+      desc: "Sin intermediarios ni plataformas automáticas: Josu revisa cada petición y responde personalmente.",
+    },
+  ],
+  clarification: "El envío de la solicitud no constituye reserva confirmada. Toda reserva queda sujeta a disponibilidad y confirmación personal por parte del responsable.",
+};
+
+export const deporteContent = athleticContent;
 
 export const galleryContent = {
   tag: "La Casa Por Dentro",
@@ -201,3 +298,18 @@ export const locationContent = {
     buttonText: "Abrir en Google Maps",
   },
 };
+
+export const instagramFeed = {
+  account: "@coventgarden_bilbao",
+  url: "https://instagram.com/coventgarden_bilbao",
+  apiEndpoint: "api/instagram.php",
+  fallbackPost: {
+    id: "post_fallback_1",
+    caption: "¡Hoy juega el Athletic! Ambiente inmejorable en Covent Garden Bilbao. Pintas frías, raciones calientes y sentimiento zurigorri en el corazón de Indautxu. ¡Aúpa Athletic!",
+    imageUrl: "images/covent-barra-pintxos.jpg",
+    permalink: "https://www.instagram.com/p/DTTF9mwiDq6/",
+    timestamp: "2026-10-04T18:30:00Z",
+    likes: 142,
+  },
+};
+

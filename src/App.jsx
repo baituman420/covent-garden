@@ -4,9 +4,11 @@ import './styles/main.css';
 import Header from './components/Header.jsx';
 import Hero from './components/Hero.jsx';
 import ElPub from './components/ElPub.jsx';
-import ComerBeber from './components/ComerBeber.jsx';
+import Especialidades from './components/Especialidades.jsx';
+import Athletic from './components/Athletic.jsx';
+import GruposBloque from './components/GruposBloque.jsx';
 import Barra from './components/Barra.jsx';
-import Deporte from './components/Deporte.jsx';
+import ComerBeber from './components/ComerBeber.jsx';
 import Galeria from './components/Galeria.jsx';
 import InstagramLocation from './components/InstagramLocation.jsx';
 import Footer from './components/Footer.jsx';
@@ -18,9 +20,11 @@ export default function App() {
       <main style={{ width: '100%', paddingTop: '5rem', flex: 1 }}>
         <Hero />
         <ElPub />
-        <ComerBeber />
+        <Especialidades />
+        <Athletic />
+        <GruposBloque />
         <Barra />
-        <Deporte />
+        <ComerBeber />
         <Galeria />
         <InstagramLocation />
       </main>

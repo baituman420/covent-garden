@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
 import { site, navigation } from '../data/siteContent.js';
 
-export default function Header() {
+export default function Header({ isSubpage = false }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const baseUrl = import.meta.env.BASE_URL;
+
+  const resolveLink = (item) => {
+    if (item.external) return item.href;
+    if (item.page) return `${baseUrl}${item.href}`;
+    if (item.href.startsWith('#')) {
+      return isSubpage ? `${baseUrl}${item.href}` : item.href;
+    }
+    return `${baseUrl}${item.href}`;
+  };
 
   return (
     <header className="site-header">
       <div className="container header-container">
         
         {/* Brand Logo & Name */}
-        <a href="#" className="brand-link">
+        <a href={baseUrl} className="brand-link">
           <img
             src={`${baseUrl}${site.logo}`}
             alt={site.name}
@@ -24,7 +33,7 @@ export default function Header() {
           {navigation.map((item, idx) => (
             <a
               key={idx}
-              href={item.href}
+              href={resolveLink(item)}
               target={item.external ? '_blank' : '_self'}
               rel={item.external ? 'noopener noreferrer' : undefined}
               className="nav-link"
@@ -59,7 +68,7 @@ export default function Header() {
           {navigation.map((item, idx) => (
             <a
               key={idx}
-              href={item.href}
+              href={resolveLink(item)}
               target={item.external ? '_blank' : '_self'}
               rel={item.external ? 'noopener noreferrer' : undefined}
               className="mobile-nav-link"
