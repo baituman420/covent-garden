@@ -7,37 +7,100 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+// Iconografía tabernera para cada categoría
+const categoryIcons = {
+  raciones: 'tapas',
+  burguers: 'lunch_dining',
+  pizzas: 'local_pizza',
+  platos: 'restaurant',
+  'bocatas-sandwiches': 'bakery_dining',
+  ensaladas: 'spa',
+  postres: 'cake',
+};
+
+// Resúmenes rápidos de oferta por categoría
+const categorySummaries = {
+  raciones: '10 raciones crujientes y tablas ibéricas para compartir',
+  burguers: '10 hamburguesas artesanas y smash con patatas y bebida',
+  pizzas: '10 pizzas al horno servidas sobre tabla noble de madera',
+  platos: '10 platos combinados abundantes con receta de la casa',
+  'bocatas-sandwiches': '12 sándwiches y bocadillos rústicos con bebida y patatas',
+  ensaladas: '7 ensaladas templadas y frescas con pan y bebida',
+  postres: 'Tartas caseras diarias @lastartasdelcovent y cafés especiales',
+};
+
 export default function CartaCompleta() {
   const baseUrl = import.meta.env.BASE_URL;
-  const [activeCategoryId, setActiveCategoryId] = useState('all');
+  
+  // Estado de secciones desplegadas (por defecto abrimos 'burguers' como escaparate de bienvenida)
+  const [openSections, setOpenSections] = useState({
+    burguers: true,
+  });
+  const [activeFocusedCat, setActiveFocusedCat] = useState('burguers');
+
   const sectionRef = useRef(null);
+  const chapterRefs = useRef({});
   const postersRef = useRef(null);
   const posterLeftRef = useRef(null);
   const posterRightRef = useRef(null);
 
-  const categories = [
-    { id: 'all', name: 'Toda la Carta' },
-    ...cartaContent.categories.map((c) => ({ id: c.id, name: c.name })),
-  ];
+  const categories = cartaContent.categories;
 
-  const displayedCategories =
-    activeCategoryId === 'all'
-      ? cartaContent.categories
-      : cartaContent.categories.filter((c) => c.id === activeCategoryId);
+  // Toggle individual de una sección
+  const toggleSection = (catId) => {
+    setOpenSections((prev) => {
+      const isCurrentlyOpen = !!prev[catId];
+      const nextState = { ...prev, [catId]: !isCurrentlyOpen };
+      return nextState;
+    });
+    setActiveFocusedCat(catId);
+  };
 
+  // Selección directa desde la botonera superior o pie de sección
+  const selectAndScrollToCategory = (catId) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [catId]: true,
+    }));
+    setActiveFocusedCat(catId);
+
+    // Desplazamiento suave con compensación por cabecera fija
+    setTimeout(() => {
+      const targetEl = chapterRefs.current[catId];
+      if (targetEl) {
+        const headerOffset = 95;
+        const elementPosition = targetEl.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      }
+    }, 60);
+  };
+
+  // Desplegar todas las secciones a la vez
+  const handleExpandAll = () => {
+    const allOpen = {};
+    categories.forEach((cat) => {
+      allOpen[cat.id] = true;
+    });
+    setOpenSections(allOpen);
+  };
+
+  // Plegar todas las secciones
+  const handleCollapseAll = () => {
+    setOpenSections({});
+  };
+
+  // Efecto GSAP para carteles y referencias
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Entrance animation for the two standalone posters (no enclosing box)
-      if (posterLeftRef.current && posterRightRef.current) {
+      // 1. Entrada de carteles vintage del dueño
+      if (posterLeftRef.current && posterRightRef.current && postersRef.current) {
         gsap.fromTo(
           posterLeftRef.current,
-          {
-            opacity: 0,
-            y: 60,
-            rotateZ: -6,
-            rotateY: -10,
-            scale: 0.92,
-          },
+          { opacity: 0, y: 50, rotateZ: -5, rotateY: -8, scale: 0.94 },
           {
             opacity: 1,
             y: 0,
@@ -48,7 +111,7 @@ export default function CartaCompleta() {
             ease: 'power3.out',
             scrollTrigger: {
               trigger: postersRef.current,
-              start: 'top 82%',
+              start: 'top 85%',
               toggleActions: 'play none none none',
             },
           }
@@ -56,13 +119,7 @@ export default function CartaCompleta() {
 
         gsap.fromTo(
           posterRightRef.current,
-          {
-            opacity: 0,
-            y: 60,
-            rotateZ: 6,
-            rotateY: 10,
-            scale: 0.92,
-          },
+          { opacity: 0, y: 50, rotateZ: 5, rotateY: 8, scale: 0.94 },
           {
             opacity: 1,
             y: 0,
@@ -74,47 +131,18 @@ export default function CartaCompleta() {
             ease: 'power3.out',
             scrollTrigger: {
               trigger: postersRef.current,
-              start: 'top 82%',
+              start: 'top 85%',
               toggleActions: 'play none none none',
             },
           }
         );
       }
-
-      // 2. Animate visual reference cards per category when they enter viewport
-      const visualStrips = sectionRef.current.querySelectorAll('.category-visual-strip');
-      visualStrips.forEach((strip) => {
-        const cards = strip.querySelectorAll('.visual-ref-card');
-        if (cards.length > 0) {
-          gsap.fromTo(
-            cards,
-            {
-              opacity: 0,
-              y: 35,
-              scale: 0.96,
-            },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.75,
-              stagger: 0.1,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: strip,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-              },
-            }
-          );
-        }
-      });
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [displayedCategories]);
+  }, []);
 
-  // Interactive 3D tilt on mousemove across the posters stage
+  // Interacción 3D suave al mover el ratón sobre los carteles
   const handlePosterMouseMove = (e) => {
     if (!postersRef.current) return;
     const rect = postersRef.current.getBoundingClientRect();
@@ -164,6 +192,9 @@ export default function CartaCompleta() {
     }
   };
 
+  // Contar cuántas secciones están abiertas actualmente
+  const totalOpenCount = Object.values(openSections).filter(Boolean).length;
+
   return (
     <section id="carta" ref={sectionRef} className="carta-section section-padding">
       <div className="container">
@@ -181,7 +212,7 @@ export default function CartaCompleta() {
             {cartaContent.subtitle}
           </p>
 
-          <p className="body-copy" style={{ maxWidth: '44rem', margin: '0 auto 2rem auto', color: 'var(--color-text-muted)' }}>
+          <p className="body-copy" style={{ maxWidth: '44rem', margin: '0 auto 1.75rem auto', color: 'var(--color-text-muted)' }}>
             {cartaContent.description}
           </p>
 
@@ -253,108 +284,262 @@ export default function CartaCompleta() {
           </div>
         </div>
 
-        {/* Barra de Filtros / Pestañas de la Carta */}
-        <div className="carta-tabs-container">
-          <div className="carta-tabs-scroll" role="tablist" aria-label="Categorías de la carta">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                role="tab"
-                aria-selected={activeCategoryId === cat.id}
-                className={`carta-tab-btn ${activeCategoryId === cat.id ? 'active' : ''}`}
-                onClick={() => setActiveCategoryId(cat.id)}
-              >
-                {cat.name}
-              </button>
-            ))}
+        {/* CINTA RÁPIDA / SELECTOR FIJO DE SECCIONES (Permite seleccionar cualquier sección una vez desplegado) */}
+        <div className="carta-quick-ribbon-container">
+          <div className="carta-quick-ribbon">
+            <div className="ribbon-label-box">
+              <span className="material-symbols-outlined ribbon-icon">menu_book</span>
+              <span className="ribbon-text">SECCIONES:</span>
+            </div>
+
+            <div className="ribbon-pills-scroll" role="tablist" aria-label="Navegación rápida de secciones">
+              {categories.map((cat) => {
+                const isOpen = !!openSections[cat.id];
+                const isFocused = activeFocusedCat === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isFocused}
+                    className={`ribbon-tab-btn ${isOpen ? 'is-open' : ''} ${isFocused ? 'is-focused' : ''}`}
+                    onClick={() => selectAndScrollToCategory(cat.id)}
+                    title={`Ver sección ${cat.name}`}
+                  >
+                    <span className="material-symbols-outlined tab-icon">
+                      {categoryIcons[cat.id] || 'restaurant'}
+                    </span>
+                    <span className="tab-label">{cat.name}</span>
+                    {isOpen && <span className="open-dot" title="Sección desplegada" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Acciones globales de despliegue */}
+            <div className="ribbon-actions">
+              {totalOpenCount < categories.length ? (
+                <button
+                  type="button"
+                  onClick={handleExpandAll}
+                  className="ribbon-action-btn"
+                  title="Abrir todas las secciones"
+                >
+                  <span className="material-symbols-outlined">unfold_more</span>
+                  <span className="action-label">Desplegar Todo</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleCollapseAll}
+                  className="ribbon-action-btn"
+                  title="Plegar todas las secciones"
+                >
+                  <span className="material-symbols-outlined">unfold_less</span>
+                  <span className="action-label">Plegar Todo</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Contenido de la Carta por Categorías */}
-        <div className="carta-categories-flow">
-          {displayedCategories.map((category) => (
-            <div key={category.id} className="carta-category-block">
-              {/* Encabezado de la Categoría */}
-              <div className="category-header">
-                <div className="category-title-wrap">
-                  <span className="category-badge">{category.badge}</span>
-                  <h3 className="category-title">{category.name}</h3>
-                </div>
-                {category.shortDesc && (
-                  <p className="category-desc">{category.shortDesc}</p>
-                )}
-                {category.note && (
-                  <div className="category-note">
-                    <span className="material-symbols-outlined">info</span>
-                    <span>{category.note}</span>
-                  </div>
-                )}
-              </div>
+        {/* LISTADO DE SECCIONES DESPLEGABLES CON EFECTO ORIGINAL */}
+        <div className="carta-accordion-stack">
+          {categories.map((category, catIndex) => {
+            const isOpen = !!openSections[category.id];
+            const prevCategory = catIndex > 0 ? categories[catIndex - 1] : null;
+            const nextCategory = catIndex < categories.length - 1 ? categories[catIndex + 1] : null;
 
-              {/* Referencias Visuales de la Categoría (Galería destacada sin mezclar con los platos) */}
-              {category.visualReferences && category.visualReferences.length > 0 && (
-                <div className="category-visual-strip">
-                  <div className="visual-strip-header">
-                    <span className="visual-strip-label">
-                      <span className="material-symbols-outlined">photo_camera</span>
-                      <span>REFERENCIAS VISUALES · {category.name.toUpperCase()}</span>
-                    </span>
-                    <span className="visual-strip-hint">Fotografías reales tomadas en Covent Garden</span>
-                  </div>
+            return (
+              <div
+                key={category.id}
+                ref={(el) => (chapterRefs.current[category.id] = el)}
+                className={`carta-deployable-chapter ${isOpen ? 'is-expanded' : 'is-collapsed'}`}
+              >
+                {/* Cabecera / Plegador Interactivo de la Sección */}
+                <button
+                  type="button"
+                  onClick={() => toggleSection(category.id)}
+                  className="chapter-header-bar"
+                  aria-expanded={isOpen}
+                  aria-controls={`chapter-content-${category.id}`}
+                >
+                  <div className="chapter-header-left">
+                    <div className="chapter-seal-wrap">
+                      <span className="material-symbols-outlined chapter-seal-icon">
+                        {categoryIcons[category.id] || 'restaurant'}
+                      </span>
+                    </div>
 
-                  <div className="visual-strip-grid">
-                    {category.visualReferences.map((refItem, refIdx) => (
-                      <div key={refIdx} className="visual-ref-card">
-                        <div className="visual-ref-img-wrap">
-                          <img
-                            src={`${baseUrl}${refItem.src}`}
-                            alt={refItem.title}
-                            loading="lazy"
-                            className="visual-ref-img"
-                          />
-                          <span className="visual-ref-badge">{refItem.badge}</span>
-                          <div className="visual-ref-overlay" />
-                        </div>
-                        <div className="visual-ref-caption">
-                          <h4 className="visual-ref-title">{refItem.title}</h4>
-                          <p className="visual-ref-desc">{refItem.desc}</p>
-                        </div>
+                    <div className="chapter-meta">
+                      <div className="chapter-badge-line">
+                        <span className="chapter-badge">{category.badge}</span>
+                        <span className="chapter-dishes-count">
+                          {category.items.length} platos
+                        </span>
                       </div>
-                    ))}
+                      <h3 className="chapter-title">{category.name}</h3>
+                      <p className="chapter-summary">
+                        {categorySummaries[category.id] || category.shortDesc}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
 
-              {/* Rejilla de Platos de la Categoría (Estrictamente SIN PRECIOS y SIN IMÁGENES DENTRO DEL PLATO) */}
-              <div className="carta-items-grid">
-                {category.items.map((item, idx) => (
-                  <article key={idx} className="carta-item-card typography-card">
-                    <div className="carta-item-content">
-                      <div className="carta-item-header">
-                        <h4 className="carta-item-title">
-                          <span className="dish-bullet" />
-                          <span>{item.name}</span>
-                        </h4>
-                      </div>
+                  {/* Botón de estado de despliegue */}
+                  <div className="chapter-header-right">
+                    <div className={`chapter-toggle-pill ${isOpen ? 'active-pill' : ''}`}>
+                      <span className="toggle-text">
+                        {isOpen ? 'Plegar Carta' : 'Desplegar Sección'}
+                      </span>
+                      <span className={`material-symbols-outlined toggle-chevron ${isOpen ? 'chevron-up' : ''}`}>
+                        expand_more
+                      </span>
+                    </div>
+                  </div>
+                </button>
 
-                      <p className="carta-item-desc">{item.desc}</p>
+                {/* Contenedor con Despliegue Suave y Efecto Folio Tabernero */}
+                <div
+                  id={`chapter-content-${category.id}`}
+                  className={`chapter-unfold-wrapper ${isOpen ? 'is-open' : ''}`}
+                >
+                  <div className="chapter-unfold-inner">
+                    {/* Línea dorada de brillo al desplegar */}
+                    <div className="unfold-shimmer-sweep" />
 
-                      {item.tags && item.tags.length > 0 && (
-                        <div className="carta-item-tags">
-                          {item.tags.map((t, tIdx) => (
-                            <span key={tIdx} className="carta-tag-pill">
-                              {t}
-                            </span>
-                          ))}
+                    {/* Descripción y notas */}
+                    <div className="chapter-intro-block">
+                      {category.shortDesc && (
+                        <p className="chapter-expanded-desc">{category.shortDesc}</p>
+                      )}
+                      {category.note && (
+                        <div className="category-note">
+                          <span className="material-symbols-outlined">info</span>
+                          <span>{category.note}</span>
                         </div>
                       )}
                     </div>
-                  </article>
-                ))}
+
+                    {/* Referencias Visuales de la Sección (Galería Deal-In) */}
+                    {category.visualReferences && category.visualReferences.length > 0 && (
+                      <div className="category-visual-strip">
+                        <div className="visual-strip-header">
+                          <span className="visual-strip-label">
+                            <span className="material-symbols-outlined">photo_camera</span>
+                            <span>REFERENCIAS VISUALES · {category.name.toUpperCase()}</span>
+                          </span>
+                          <span className="visual-strip-hint">Fotografías reales tomadas en Covent Garden</span>
+                        </div>
+
+                        <div className="visual-strip-grid">
+                          {category.visualReferences.map((refItem, refIdx) => (
+                            <div key={refIdx} className="visual-ref-card">
+                              <div className="visual-ref-img-wrap">
+                                <img
+                                  src={`${baseUrl}${refItem.src}`}
+                                  alt={refItem.title}
+                                  loading="lazy"
+                                  className="visual-ref-img"
+                                />
+                                <span className="visual-ref-badge">{refItem.badge}</span>
+                                <div className="visual-ref-overlay" />
+                              </div>
+                              <div className="visual-ref-caption">
+                                <h4 className="visual-ref-title">{refItem.title}</h4>
+                                <p className="visual-ref-desc">{refItem.desc}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Rejilla de Platos de la Categoría (Estrictamente SIN PRECIOS y SIN IMÁGENES DENTRO DEL PLATO) */}
+                    <div className="carta-items-grid">
+                      {category.items.map((item, idx) => (
+                        <article key={idx} className="carta-item-card typography-card">
+                          <div className="carta-item-content">
+                            <div className="carta-item-header">
+                              <h4 className="carta-item-title">
+                                <span className="dish-bullet" />
+                                <span>{item.name}</span>
+                              </h4>
+                            </div>
+
+                            <p className="carta-item-desc">{item.desc}</p>
+
+                            {item.tags && item.tags.length > 0 && (
+                              <div className="carta-item-tags">
+                                {item.tags.map((t, tIdx) => (
+                                  <span key={tIdx} className="carta-tag-pill">
+                                    {t}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+
+                    {/* Navegación rápida al final de la sección desplegada para cambiar de categoría sin fricción */}
+                    <div className="chapter-bottom-nav">
+                      <div className="chapter-bottom-nav-inner">
+                        {prevCategory ? (
+                          <button
+                            type="button"
+                            onClick={() => selectAndScrollToCategory(prevCategory.id)}
+                            className="chapter-nav-btn prev-btn"
+                          >
+                            <span className="material-symbols-outlined">arrow_back</span>
+                            <span>Anterior: <strong>{prevCategory.name}</strong></span>
+                          </button>
+                        ) : (
+                          <div />
+                        )}
+
+                        <div className="chapter-bottom-selector">
+                          <span className="selector-title">Cambiar de sección:</span>
+                          <div className="selector-pills">
+                            {categories.map((c) => (
+                              <button
+                                key={c.id}
+                                type="button"
+                                className={`selector-mini-pill ${c.id === category.id ? 'current' : ''}`}
+                                onClick={() => selectAndScrollToCategory(c.id)}
+                              >
+                                {c.name.split(' ')[0]}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {nextCategory ? (
+                          <button
+                            type="button"
+                            onClick={() => selectAndScrollToCategory(nextCategory.id)}
+                            className="chapter-nav-btn next-btn"
+                          >
+                            <span>Siguiente: <strong>{nextCategory.name}</strong></span>
+                            <span className="material-symbols-outlined">arrow_forward</span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => selectAndScrollToCategory(categories[0].id)}
+                            className="chapter-nav-btn restart-btn"
+                          >
+                            <span>Volver a: <strong>{categories[0].name}</strong></span>
+                            <span className="material-symbols-outlined">arrow_upward</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Footer y Llamada de la Carta */}
