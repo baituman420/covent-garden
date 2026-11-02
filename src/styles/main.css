@@ -690,10 +690,12 @@ section[id] {
 
 .barra-grid-balanced {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.75rem;
   margin-top: 2.5rem;
   align-items: stretch;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (min-width: 992px) {
@@ -714,6 +716,9 @@ section[id] {
   height: 100%;
   min-height: 480px;
   background-color: #0d0b0a;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .barra-main-img-wrap {
@@ -796,6 +801,9 @@ section[id] {
   gap: 1.25rem;
   justify-content: space-between;
   height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .barra-accent-card {
@@ -808,6 +816,9 @@ section[id] {
   padding: 1.25rem;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media (min-width: 540px) {
@@ -899,11 +910,14 @@ section[id] {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 640px) {
   .barra-badges-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -916,6 +930,9 @@ section[id] {
   border: 1px solid rgba(247, 188, 96, 0.18);
   border-radius: var(--radius-sm);
   transition: border-color 0.25s ease, background-color 0.25s ease;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .barra-mini-pill:hover {
@@ -1326,6 +1343,8 @@ section[id] {
   border-top: 1px solid rgba(213, 0, 0, 0.35);
   border-bottom: 1px solid rgba(213, 0, 0, 0.35);
   overflow: hidden;
+  max-width: 100vw;
+  contain: paint;
   scroll-margin-top: 5.5rem;
 }
 
@@ -2151,6 +2170,8 @@ section[id] {
   padding: 0.65rem 0;
   margin-bottom: 2.25rem;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .carta-quick-ribbon {
@@ -3432,6 +3453,38 @@ section[id] {
   touch-action: manipulation;
 }
 
+.call-btn-mobile {
+  display: none;
+}
+
+/* Enlace a menús en la barra de navegación de escritorio */
+.nav-link-navidad {
+  color: #ffd7a8 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700 !important;
+  background: rgba(139, 30, 36, 0.45);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(247, 188, 96, 0.5);
+  transition: all 0.2s ease;
+}
+
+.nav-link-navidad:hover {
+  background: rgba(139, 30, 36, 0.85);
+  border-color: var(--color-brass);
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
+.nav-navidad-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+
+
 /* Banner de Menús Especiales en Cabecera de Carta */
 .carta-navidad-callout-btn {
   margin-top: 1.25rem;
@@ -3670,80 +3723,168 @@ section[id] {
     right: 10px;
   }
 
-  /* Ventana Emergente Navidad en móvil (< 768px) */
+  /* Ventana Emergente Navidad & Enlace a los Menús en móvil (< 768px) */
   .navidad-floating-trigger {
     position: fixed;
-    bottom: max(1.15rem, env(safe-area-inset-bottom, 1.15rem));
-    left: 1rem;
+    /* CLEARANCE: Safely above iOS Safari dynamic toolbar and Android navigation bar */
+    bottom: max(1.25rem, calc(env(safe-area-inset-bottom, 0px) + 1.15rem));
     right: 1rem;
-    margin: 0 auto;
+    left: auto;
+    margin: 0;
     width: auto;
-    max-width: 420px;
-    transform: none;
-    padding: 0.8rem 1.15rem;
-    justify-content: space-between;
+    max-width: calc(100vw - 2rem);
+    box-sizing: border-box;
+    padding: 0.65rem 0.95rem;
+    gap: 0.55rem;
     border-radius: var(--radius-full);
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.85), 0 0 18px rgba(247, 188, 96, 0.4);
-    z-index: 990;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 18px rgba(247, 188, 96, 0.45);
+    z-index: 995;
+    transform: none;
+    touch-action: manipulation;
   }
 
   .navidad-floating-trigger:hover {
     transform: translateY(-2px);
   }
 
-  .navidad-trigger-text {
-    font-size: 0.85rem;
+  .trigger-text-full {
+    display: none;
+  }
+
+  .trigger-text-compact {
+    display: inline;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
     white-space: nowrap;
   }
 
   .navidad-trigger-price {
-    font-size: 0.75rem;
-    padding: 0.15rem 0.45rem;
+    font-size: 0.72rem;
+    color: var(--color-brass);
+    font-weight: 800;
+    white-space: nowrap;
   }
 
-  /* Modal Dialog en Móvil: Bottom-Sheet nativo de 94dvh */
+  .navidad-trigger-badge {
+    padding: 0.2rem 0.5rem;
+    gap: 0.25rem;
+  }
+
+
+
+  /* Modal Dialog en Móvil: Experiencia completa, fija y aislada de desbordamiento */
   .navidad-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
     padding: 0;
-    align-items: flex-end;
-    background-color: rgba(6, 4, 3, 0.97);
+    margin: 0;
+    background-color: rgba(6, 4, 3, 0.98);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+    z-index: 10000;
+    overflow: hidden;
   }
 
   .navidad-modal-dialog {
-    max-height: 94dvh;
-    height: 94dvh;
-    border-radius: 1.25rem 1.25rem 0 0;
+    position: relative;
     width: 100%;
     max-width: 100%;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
+    height: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    background-color: #14110f;
+    background-image: linear-gradient(180deg, #1f1917 0%, #120f0e 100%);
+    overflow: hidden;
   }
 
+  /* Safe Area Header */
   .navidad-modal-header {
-    padding: 0.85rem 1rem;
+    padding-top: max(0.85rem, calc(env(safe-area-inset-top, 0px) + 0.65rem));
+    padding-bottom: 0.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background: #251918;
+    border-bottom: 1px solid rgba(247, 188, 96, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .navidad-modal-header-main {
+    flex: 1;
+    min-width: 0;
   }
 
   .navidad-modal-title {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+    line-height: 1.25;
+    color: var(--color-cream);
+    margin: 0;
+    word-break: break-word;
   }
 
   .navidad-modal-close {
-    width: 2.5rem;
-    height: 2.5rem;
-    min-width: 44px;
-    min-height: 44px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(45, 38, 35, 0.9);
+    border: 1px solid rgba(247, 188, 96, 0.4);
+    color: #fff;
+    cursor: pointer;
+    touch-action: manipulation;
   }
 
+  /* Flexible, non-overflowing Tabs Bar */
   .navidad-tabs-wrapper {
+    background: #1c1816;
+    border-bottom: 1px solid rgba(247, 188, 96, 0.2);
     padding: 0.5rem 0.75rem;
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .navidad-tabs-bar {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr 0.85fr;
+    display: flex;
     gap: 0.35rem;
     width: 100%;
+    box-sizing: border-box;
+  }
+
+  .navidad-tab-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    min-height: 40px;
+    text-align: center;
+    justify-content: center;
+    white-space: normal;
+    line-height: 1.15;
+    border-radius: var(--radius-full);
   }
 
   .tab-label-full {
@@ -3752,20 +3893,25 @@ section[id] {
 
   .tab-label-mobile {
     display: inline;
+    font-size: 0.68rem;
   }
 
-  .navidad-tab-btn {
-    padding: 0.5rem 0.25rem;
-    font-size: 0.72rem;
-    min-height: 42px;
-    width: 100%;
-    justify-content: center;
-    text-align: center;
+  .tab-pill-icon {
+    font-size: 0.85rem;
+    flex-shrink: 0;
   }
 
+  /* Scrollable Modal Body */
   .navidad-modal-body {
-    padding: 0.85rem 0.85rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding: 0.85rem;
     gap: 0.85rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .navidad-card-detail {
@@ -3775,57 +3921,110 @@ section[id] {
   .navidad-card-top {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.65rem;
-    padding-bottom: 0.75rem;
-    margin-bottom: 0.75rem;
+    gap: 0.5rem;
+    padding-bottom: 0.65rem;
+    margin-bottom: 0.65rem;
   }
 
   .navidad-card-name {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
 
-  .navidad-price-tag,
-  .navidad-price-single {
+  .navidad-price-tag {
     width: 100%;
     justify-content: space-around;
   }
 
-  .navidad-menu-row {
-    font-size: 0.82rem;
+  .navidad-price-single {
+    width: 100%;
+    justify-content: flex-start;
     gap: 0.5rem;
   }
 
-  .navidad-poster-img {
-    max-height: 50vh;
-    object-fit: contain;
-    width: 100%;
+  .navidad-menu-row {
+    font-size: 0.8rem;
+    line-height: 1.35;
+    gap: 0.5rem;
   }
 
-  /* Footer Fijo en la Base */
-  .navidad-modal-footer {
-    padding: 0.75rem 0.85rem;
+  .navidad-poster-preview {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 0.65rem;
+  }
+
+  .navidad-poster-img {
+    max-height: 52vh;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Fixed, safe-area padded footer */
+  .navidad-modal-footer {
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: #1c1816;
+    border-top: 1px solid rgba(247, 188, 96, 0.25);
+    padding-top: 0.65rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: max(0.85rem, calc(env(safe-area-inset-bottom, 0px) + 0.65rem));
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
   }
 
   .navidad-footer-info {
     justify-content: center;
     text-align: center;
-  }
-
-  .navidad-footer-actions {
-    flex-direction: column;
-    width: 100%;
     gap: 0.5rem;
   }
 
-  .navidad-call-btn,
-  .navidad-close-btn {
+  .footer-phone-icon {
+    font-size: 20px;
+  }
+
+  .info-label {
+    font-size: 0.6rem;
+  }
+
+  .info-val-link {
+    font-size: 1.15rem;
+  }
+
+  .navidad-footer-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
     width: 100%;
+  }
+
+  .navidad-call-btn {
+    flex: 1;
+    min-height: 42px;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.82rem;
     justify-content: center;
-    min-height: 46px;
-    font-size: 0.85rem;
+  }
+
+  .navidad-close-btn {
+    flex: 0 0 auto;
+    min-width: 80px;
+    min-height: 42px;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.8rem;
+    justify-content: center;
+  }
+
+  .call-btn-full {
+    display: none;
+  }
+
+  .call-btn-mobile {
+    display: inline;
   }
 
   /* Banner de carta en móvil */
@@ -3843,6 +4042,16 @@ section[id] {
 
 @media (max-width: 480px) {
   /* Ultra-compact para pantallas estrechas (< 480px) */
+  .brand-name-sub {
+    display: none;
+  }
+  .brand-name {
+    font-size: 1rem;
+  }
+  .header-cta-btn {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.6rem;
+  }
   .barra-badges-grid {
     grid-template-columns: 1fr;
   }
@@ -3851,30 +4060,25 @@ section[id] {
     gap: 0.3rem;
   }
 
-  .trigger-text-full {
-    display: none;
-  }
-
-  .trigger-text-compact {
-    display: inline;
-    font-size: 0.82rem;
-  }
-
-  .navidad-trigger-price {
-    font-size: 0.72rem;
-  }
-
   .navidad-modal-title {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
   }
 
   .navidad-tab-btn {
-    padding: 0.45rem 0.5rem;
-    font-size: 0.68rem;
+    padding: 0.45rem 0.2rem;
+    font-size: 0.65rem;
   }
 
   .tab-pill-icon {
     display: none;
+  }
+
+  .navidad-footer-actions {
+    flex-direction: row;
+  }
+  
+  .navidad-call-btn {
+    font-size: 0.75rem;
   }
 }
 

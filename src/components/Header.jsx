@@ -25,7 +25,10 @@ export default function Header({ isSubpage = false }) {
             alt={site.name}
             className="brand-logo"
           />
-          <span className="brand-name">{site.name.toUpperCase()}</span>
+          <span className="brand-name">
+            <span className="brand-name-main">COVENT GARDEN</span>
+            <span className="brand-name-sub"> BILBAO</span>
+          </span>
         </a>
 
         {/* Desktop Navigation */}
@@ -33,19 +36,24 @@ export default function Header({ isSubpage = false }) {
           {navigation.map((item, idx) => (
             <a
               key={idx}
-              href={resolveLink(item)}
+              href={item.isNavidad ? '#menus-navidad' : resolveLink(item)}
+              onClick={item.isNavidad ? (e) => {
+                e.preventDefault();
+                window.dispatchEvent(new CustomEvent('open-navidad-modal'));
+              } : undefined}
               target={item.external ? '_blank' : '_self'}
               rel={item.external ? 'noopener noreferrer' : undefined}
-              className="nav-link"
+              className={`nav-link ${item.isNavidad ? 'nav-link-navidad' : ''}`}
             >
+              {item.isNavidad && <span className="nav-navidad-icon">🎄</span>}
               {item.label}
             </a>
           ))}
         </nav>
 
         {/* Action Button & Mobile Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <a href={isSubpage ? `${baseUrl}#como-llegar` : '#como-llegar'} className="btn-primary">
+        <div className="header-actions">
+          <a href={isSubpage ? `${baseUrl}#como-llegar` : '#como-llegar'} className="btn-primary header-cta-btn">
             CÓMO LLEGAR
           </a>
 
@@ -68,26 +76,28 @@ export default function Header({ isSubpage = false }) {
           {navigation.map((item, idx) => (
             <a
               key={idx}
-              href={resolveLink(item)}
+              href={item.isNavidad ? '#menus-navidad' : resolveLink(item)}
               target={item.external ? '_blank' : '_self'}
               rel={item.external ? 'noopener noreferrer' : undefined}
-              className="mobile-nav-link"
-              onClick={() => setMobileMenuOpen(false)}
+              className={`mobile-nav-link ${item.isNavidad ? 'mobile-nav-navidad-highlight' : ''}`}
+              onClick={(e) => {
+                setMobileMenuOpen(false);
+                if (item.isNavidad) {
+                  e.preventDefault();
+                  window.dispatchEvent(new CustomEvent('open-navidad-modal'));
+                }
+              }}
             >
-              {item.label}
+              {item.isNavidad ? (
+                <>
+                  <span>🎄 Menús Navidad & Katxopo</span>
+                  <span className="mobile-nav-price-tag">Desde 22€ ➔</span>
+                </>
+              ) : (
+                item.label
+              )}
             </a>
           ))}
-          <button
-            type="button"
-            className="mobile-nav-link mobile-nav-navidad-highlight"
-            onClick={() => {
-              setMobileMenuOpen(false);
-              window.dispatchEvent(new CustomEvent('open-navidad-modal'));
-            }}
-          >
-            <span>🎄 Menús Navidad & Katxopo</span>
-            <span className="mobile-nav-price-tag">Desde 22€ ➔</span>
-          </button>
         </nav>
       )}
     </header>

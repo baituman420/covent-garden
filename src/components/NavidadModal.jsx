@@ -310,7 +310,8 @@ export default function NavidadModal() {
                   className="btn-primary navidad-call-btn"
                 >
                   <span className="material-symbols-outlined">call</span>
-                  <span>Llamar Ahora ({navidadContent.reservasPhone})</span>
+                  <span className="call-btn-full">Llamar Ahora ({navidadContent.reservasPhone})</span>
+                  <span className="call-btn-mobile">Llamar ({navidadContent.reservasPhone})</span>
                 </a>
                 <button
                   type="button"

@@ -26,6 +26,7 @@ export const instagram = {
 export const navigation = [
   { label: "EL PUB", href: "#el-pub" },
   { label: "CARTA", href: "#carta" },
+  { label: "MENÚS NAVIDAD", href: "#menus-navidad", isNavidad: true },
   { label: "ESPECIALIDADES", href: "#especialidades" },
   { label: "ATHLETIC", href: "#athletic" },
   { label: "GRUPOS", href: "#grupos" },
