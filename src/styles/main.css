@@ -2900,216 +2900,284 @@ section[id] {
 /* Botón flotante persistente */
 .navidad-floating-trigger {
   position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
+  bottom: 2rem;
+  right: 2rem;
   z-index: 990;
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  background: linear-gradient(135deg, #a1141c 0%, #630a0f 100%);
-  border: 1px solid rgba(247, 188, 96, 0.6);
+  justify-content: space-between;
+  gap: 0.85rem;
+  background: linear-gradient(135deg, #8b1e24 0%, #4f080c 100%);
+  border: 1.5px solid rgba(247, 188, 96, 0.85);
   border-radius: var(--radius-full);
   padding: 0.75rem 1.25rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(161, 20, 28, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 20px rgba(139, 30, 36, 0.5);
   cursor: pointer;
   color: var(--color-cream);
   font-family: var(--font-label);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .navidad-floating-trigger:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.7), 0 0 24px rgba(247, 188, 96, 0.4);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.8), 0 0 26px rgba(247, 188, 96, 0.5);
+  background: linear-gradient(135deg, #a9252c 0%, #68000f 100%);
+}
+
+.navidad-trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
 }
 
 .navidad-pulse-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background-color: #ffd700;
-  box-shadow: 0 0 8px #ffd700;
+  box-shadow: 0 0 10px #ffd700;
   animation: pulse 2s infinite;
+  flex-shrink: 0;
 }
 
 .navidad-trigger-icon {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 .navidad-trigger-text {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.navidad-trigger-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(247, 188, 96, 0.45);
 }
 
 .navidad-trigger-price {
-  background: rgba(0, 0, 0, 0.35);
-  padding: 0.15rem 0.5rem;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--color-brass);
   font-weight: 800;
-  border: 1px solid rgba(247, 188, 96, 0.3);
+  white-space: nowrap;
+}
+
+.navidad-trigger-chevron {
+  font-size: 16px;
+  color: var(--color-brass);
+  display: inline-flex;
+  align-items: center;
+}
+
+.trigger-text-compact {
+  display: none;
 }
 
 /* Backdrop del Modal */
 .navidad-modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1000;
-  background: rgba(10, 8, 7, 0.85);
-  backdrop-filter: blur(8px);
+  z-index: 10000;
+  background-color: rgba(6, 4, 3, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 1.5rem;
   overflow-y: auto;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  opacity: 1;
 }
 
 .navidad-modal-dialog {
-  background: linear-gradient(145deg, #1f1b19 0%, #12100f 100%);
-  border: 1px solid rgba(247, 188, 96, 0.45);
-  border-radius: var(--radius-lg);
+  background-color: #181412;
+  background-image: linear-gradient(180deg, #221c19 0%, #14110f 100%);
+  border: 1.5px solid rgba(247, 188, 96, 0.5);
+  border-radius: var(--radius-xl);
   max-width: 44rem;
   width: 100%;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(247, 188, 96, 0.15);
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.95), 0 0 40px rgba(139, 30, 36, 0.35);
   overflow: hidden;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  animation: slideUp 0.35s ease;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  position: relative;
+  opacity: 1;
 }
 
 .navidad-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 1.5rem;
-  background: rgba(139, 30, 36, 0.45);
+  padding: 1.15rem 1.5rem;
+  background: #251918;
   border-bottom: 1px solid rgba(247, 188, 96, 0.3);
+  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.navidad-modal-header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .navidad-modal-badge {
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.badge-text {
   font-family: var(--font-label);
   font-size: 0.72rem;
   font-weight: 800;
-  color: var(--color-cream);
-  letter-spacing: 0.1em;
+  color: #ff9b9b;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .navidad-date-tag {
-  background: rgba(0, 0, 0, 0.35);
-  padding: 0.15rem 0.5rem;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0.15rem 0.55rem;
   border-radius: var(--radius-sm);
   color: var(--color-brass);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.68rem;
+  border: 1px solid rgba(247, 188, 96, 0.35);
+}
+
+.navidad-modal-title {
+  font-family: var(--font-headline);
+  font-size: 1.5rem;
+  color: var(--color-cream);
+  margin: 0;
+  line-height: 1.2;
 }
 
 .navidad-modal-close {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(247, 188, 96, 0.3);
+  background: rgba(30, 24, 22, 0.85);
+  border: 1.5px solid rgba(247, 188, 96, 0.45);
   border-radius: 50%;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 44px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-cream);
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  touch-action: manipulation;
 }
 
 .navidad-modal-close:hover {
   background: var(--color-oxblood);
+  border-color: var(--color-brass);
   color: #fff;
   transform: rotate(90deg);
 }
 
-.navidad-modal-body {
-  padding: 1.5rem;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+/* Selector de pestañas */
+.navidad-tabs-wrapper {
+  background: #1c1816;
+  border-bottom: 1px solid rgba(247, 188, 96, 0.2);
+  padding: 0.75rem 1.25rem;
+  flex-shrink: 0;
 }
 
-.navidad-modal-intro {
-  text-align: center;
-}
-
-.navidad-modal-title {
-  font-family: var(--font-headline);
-  font-size: 1.75rem;
-  color: var(--color-cream);
-  margin: 0 0 0.25rem 0;
-}
-
-.navidad-modal-sub {
-  font-size: 0.875rem;
-  color: var(--color-brass);
-  margin: 0;
-  font-style: italic;
-}
-
-/* Tabs en Modal */
 .navidad-tabs-bar {
   display: flex;
   gap: 0.5rem;
-  border-bottom: 1px solid rgba(247, 188, 96, 0.2);
-  padding-bottom: 0.5rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.navidad-tabs-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .navidad-tab-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.55rem 0.95rem;
-  border-radius: var(--radius-md);
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1rem;
+  min-height: 44px;
+  border-radius: var(--radius-full);
   font-family: var(--font-label);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  background: rgba(34, 31, 29, 0.6);
-  border: 1px solid rgba(247, 188, 96, 0.2);
+  background: rgba(38, 33, 30, 0.8);
+  border: 1px solid rgba(247, 188, 96, 0.25);
   color: var(--color-text-muted);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
+  touch-action: manipulation;
 }
 
 .navidad-tab-btn:hover {
   color: var(--color-cream);
+  border-color: rgba(247, 188, 96, 0.5);
 }
 
 .navidad-tab-btn.active {
-  background: var(--color-oxblood);
+  background: linear-gradient(135deg, #8b1e24 0%, #68000f 100%);
   border-color: var(--color-brass);
-  color: var(--color-cream);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(139, 30, 36, 0.5);
+}
+
+.tab-label-mobile {
+  display: none;
 }
 
 .tab-pill-icon {
   font-size: 1rem;
 }
 
+/* Cuerpo del Modal */
+.navidad-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.navidad-modal-sub {
+  font-size: 0.88rem;
+  color: var(--color-brass);
+  margin: 0;
+  font-style: italic;
+  line-height: 1.45;
+}
+
 /* Contenido de Ficha Menú Navidad */
 .navidad-card-detail {
-  background: rgba(30, 26, 24, 0.6);
-  border: 1px solid rgba(247, 188, 96, 0.25);
+  background: rgba(30, 26, 24, 0.75);
+  border: 1px solid rgba(247, 188, 96, 0.3);
   border-radius: var(--radius-md);
   padding: 1.25rem;
 }
@@ -3146,10 +3214,10 @@ section[id] {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: rgba(247, 188, 96, 0.1);
-  border: 1px solid rgba(247, 188, 96, 0.35);
+  background: rgba(247, 188, 96, 0.12);
+  border: 1px solid rgba(247, 188, 96, 0.4);
   border-radius: var(--radius-md);
-  padding: 0.4rem 0.85rem;
+  padding: 0.45rem 0.85rem;
 }
 
 .navidad-price-item {
@@ -3160,7 +3228,7 @@ section[id] {
 
 .price-num {
   font-family: var(--font-headline);
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: var(--color-brass);
   line-height: 1;
@@ -3168,26 +3236,26 @@ section[id] {
 
 .price-desc {
   font-size: 0.65rem;
-  color: var(--color-text-muted);
+  color: var(--color-cream);
 }
 
 .navidad-price-sep {
-  color: rgba(247, 188, 96, 0.4);
+  color: rgba(247, 188, 96, 0.5);
 }
 
 .navidad-price-single {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  background: rgba(247, 188, 96, 0.1);
-  border: 1px solid rgba(247, 188, 96, 0.35);
+  background: rgba(247, 188, 96, 0.12);
+  border: 1px solid rgba(247, 188, 96, 0.4);
   border-radius: var(--radius-md);
-  padding: 0.4rem 0.85rem;
+  padding: 0.45rem 0.85rem;
 }
 
 .price-big {
   font-family: var(--font-headline);
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: var(--color-brass);
   line-height: 1;
@@ -3195,7 +3263,7 @@ section[id] {
 
 .price-sub {
   font-size: 0.68rem;
-  color: var(--color-text-muted);
+  color: var(--color-cream);
 }
 
 .navidad-menu-list {
@@ -3208,7 +3276,7 @@ section[id] {
   display: flex;
   align-items: flex-start;
   gap: 0.65rem;
-  font-size: 0.875rem;
+  font-size: 0.88rem;
   color: var(--color-cream);
   line-height: 1.45;
 }
@@ -3228,7 +3296,7 @@ section[id] {
   margin-top: 1rem;
   padding: 0.65rem 0.85rem;
   background: rgba(139, 30, 36, 0.25);
-  border: 1px dashed rgba(213, 0, 0, 0.4);
+  border: 1px dashed rgba(213, 0, 0, 0.45);
   border-radius: var(--radius-sm);
   font-size: 0.825rem;
   color: var(--color-cream);
@@ -3274,21 +3342,33 @@ section[id] {
   margin: 0;
 }
 
-/* Footer Modal */
+/* Footer Modal Fijo en la Base */
 .navidad-modal-footer {
+  background: #1c1816;
+  border-top: 1px solid rgba(247, 188, 96, 0.3);
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-top: 1px solid rgba(247, 188, 96, 0.2);
-  padding-top: 1rem;
-  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .navidad-footer-info {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.75rem;
+}
+
+.footer-phone-icon {
+  color: var(--color-brass);
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.footer-info-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .info-label {
@@ -3296,20 +3376,132 @@ section[id] {
   font-family: var(--font-label);
   font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--color-text-muted);
+  text-transform: uppercase;
 }
 
-.info-val {
+.info-val-link {
   font-family: var(--font-headline);
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   color: var(--color-brass);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.info-val-link:hover {
+  color: #fff;
 }
 
 .navidad-footer-actions {
   display: flex;
-  gap: 0.65rem;
+  gap: 0.75rem;
   align-items: center;
+}
+
+.navidad-call-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.75rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #8b1e24 0%, #68000f 100%);
+  border: 1px solid var(--color-brass);
+  color: #fff;
+  border-radius: var(--radius-md);
+  min-height: 46px;
+  touch-action: manipulation;
+  box-shadow: 0 4px 16px rgba(139, 30, 36, 0.4);
+}
+
+.navidad-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.85rem;
+  background: rgba(45, 38, 35, 0.85);
+  border: 1px solid rgba(247, 188, 96, 0.3);
+  color: var(--color-cream);
+  border-radius: var(--radius-md);
+  min-height: 46px;
+  touch-action: manipulation;
+}
+
+/* Banner de Menús Especiales en Cabecera de Carta */
+.carta-navidad-callout-btn {
+  margin-top: 1.25rem;
+  width: 100%;
+  max-width: 48rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, rgba(139, 30, 36, 0.45) 0%, rgba(88, 12, 16, 0.65) 100%);
+  border: 1.5px solid rgba(247, 188, 96, 0.65);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(139, 30, 36, 0.25);
+  text-align: left;
+}
+
+.carta-navidad-callout-btn:hover {
+  border-color: var(--color-brass);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 0 24px rgba(247, 188, 96, 0.35);
+}
+
+.navidad-callout-spark {
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ff858d;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.navidad-callout-text {
+  font-size: 0.88rem;
+  color: var(--color-cream);
+  font-weight: 600;
+  flex: 1;
+}
+
+.navidad-callout-action {
+  font-family: var(--font-label);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--color-brass);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Enlace destacado en menú móvil */
+.mobile-nav-navidad-highlight {
+  margin-top: 0.5rem;
+  background: linear-gradient(135deg, rgba(139, 30, 36, 0.35) 0%, rgba(88, 12, 16, 0.55) 100%);
+  border: 1px solid rgba(247, 188, 96, 0.5);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem !important;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobile-nav-price-tag {
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--color-brass);
 }
 
 /* ==========================================================================
@@ -3478,100 +3670,179 @@ section[id] {
     right: 10px;
   }
 
-  /* Ventana Emergente Navidad en móvil */
+  /* Ventana Emergente Navidad en móvil (< 768px) */
   .navidad-floating-trigger {
-    bottom: 1rem;
+    position: fixed;
+    bottom: max(1.15rem, env(safe-area-inset-bottom, 1.15rem));
+    left: 1rem;
     right: 1rem;
-    padding: 0.55rem 0.85rem;
-    gap: 0.45rem;
+    margin: 0 auto;
+    width: auto;
+    max-width: 420px;
+    transform: none;
+    padding: 0.8rem 1.15rem;
+    justify-content: space-between;
+    border-radius: var(--radius-full);
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.85), 0 0 18px rgba(247, 188, 96, 0.4);
+    z-index: 990;
   }
+
+  .navidad-floating-trigger:hover {
+    transform: translateY(-2px);
+  }
+
   .navidad-trigger-text {
-    font-size: 0.72rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
   }
+
   .navidad-trigger-price {
-    font-size: 0.65rem;
-    padding: 0.1rem 0.35rem;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.45rem;
   }
+
+  /* Modal Dialog en Móvil: Bottom-Sheet nativo de 94dvh */
   .navidad-modal-backdrop {
-    padding: 0.5rem;
+    padding: 0;
+    align-items: flex-end;
+    background-color: rgba(6, 4, 3, 0.97);
   }
+
   .navidad-modal-dialog {
-    max-height: 94vh;
-    border-radius: var(--radius-md);
+    max-height: 94dvh;
+    height: 94dvh;
+    border-radius: 1.25rem 1.25rem 0 0;
+    width: 100%;
+    max-width: 100%;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
   }
+
   .navidad-modal-header {
-    padding: 0.75rem 0.85rem;
+    padding: 0.85rem 1rem;
+    gap: 0.75rem;
   }
+
+  .navidad-modal-title {
+    font-size: 1.2rem;
+  }
+
+  .navidad-modal-close {
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .navidad-tabs-wrapper {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .navidad-tabs-bar {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.85fr;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .tab-label-full {
+    display: none;
+  }
+
+  .tab-label-mobile {
+    display: inline;
+  }
+
+  .navidad-tab-btn {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.72rem;
+    min-height: 42px;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
   .navidad-modal-body {
-    padding: 0.85rem 0.75rem;
+    padding: 0.85rem 0.85rem;
     gap: 0.85rem;
   }
-  .navidad-modal-title {
-    font-size: 1.25rem;
-  }
-  .navidad-modal-sub {
-    font-size: 0.75rem;
-  }
-  .navidad-tabs-bar {
-    gap: 0.35rem;
-    padding-bottom: 0.35rem;
-  }
-  .navidad-tab-btn {
-    padding: 0.45rem 0.65rem;
-    font-size: 0.68rem;
-    flex-shrink: 0;
-  }
+
   .navidad-card-detail {
     padding: 0.85rem 0.75rem;
   }
+
   .navidad-card-top {
     flex-direction: column;
     align-items: stretch;
     gap: 0.65rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
   }
+
   .navidad-card-name {
     font-size: 1.15rem;
   }
-  .navidad-price-tag, .navidad-price-single {
+
+  .navidad-price-tag,
+  .navidad-price-single {
     width: 100%;
     justify-content: space-around;
   }
+
   .navidad-menu-row {
-    font-size: 0.8rem;
-    gap: 0.45rem;
+    font-size: 0.82rem;
+    gap: 0.5rem;
   }
+
   .navidad-poster-img {
-    max-height: 48vh;
+    max-height: 50vh;
     object-fit: contain;
     width: 100%;
   }
+
+  /* Footer Fijo en la Base */
   .navidad-modal-footer {
+    padding: 0.75rem 0.85rem;
     flex-direction: column;
     align-items: stretch;
     gap: 0.65rem;
-    padding-top: 0.75rem;
   }
+
   .navidad-footer-info {
     justify-content: center;
     text-align: center;
   }
+
   .navidad-footer-actions {
     flex-direction: column;
     width: 100%;
     gap: 0.5rem;
   }
-  .navidad-footer-actions .btn-primary,
-  .navidad-footer-actions .btn-secondary {
+
+  .navidad-call-btn,
+  .navidad-close-btn {
     width: 100%;
     justify-content: center;
-    text-align: center;
+    min-height: 46px;
+    font-size: 0.85rem;
+  }
+
+  /* Banner de carta en móvil */
+  .carta-navidad-callout-btn {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
     padding: 0.75rem 1rem;
-    font-size: 0.82rem;
+  }
+
+  .navidad-callout-action {
+    align-self: flex-end;
   }
 }
 
 @media (max-width: 480px) {
-  /* Ultra-compact para pantallas estrechas */
+  /* Ultra-compact para pantallas estrechas (< 480px) */
   .barra-badges-grid {
     grid-template-columns: 1fr;
   }
@@ -3579,10 +3850,30 @@ section[id] {
     font-size: 0.7rem;
     gap: 0.3rem;
   }
-  .navidad-floating-trigger {
-    padding: 0.45rem 0.7rem;
+
+  .trigger-text-full {
+    display: none;
   }
+
+  .trigger-text-compact {
+    display: inline;
+    font-size: 0.82rem;
+  }
+
   .navidad-trigger-price {
+    font-size: 0.72rem;
+  }
+
+  .navidad-modal-title {
+    font-size: 1.15rem;
+  }
+
+  .navidad-tab-btn {
+    padding: 0.45rem 0.5rem;
+    font-size: 0.68rem;
+  }
+
+  .tab-pill-icon {
     display: none;
   }
 }

@@ -37,6 +37,7 @@
   --radius-md: 0.25rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
+  --radius-full: 9999px;
 
   --shadow-oxblood: 0 4px 20px rgba(139, 30, 36, 0.45);
   --shadow-card: 0 12px 32px -8px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(247, 188, 96, 0.06);

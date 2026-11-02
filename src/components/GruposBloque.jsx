@@ -63,24 +63,36 @@ export default function GruposBloque() {
 
             {/* Banner Especial de Menús de Grupo y Temporada */}
             <div
+              role="button"
+              tabIndex={0}
+              onClick={() => window.dispatchEvent(new CustomEvent('open-navidad-modal'))}
+              onKeyDown={(e) => e.key === 'Enter' && window.dispatchEvent(new CustomEvent('open-navidad-modal'))}
+              className="grupos-navidad-banner-trigger"
               style={{
-                backgroundColor: 'rgba(213, 0, 0, 0.12)',
-                border: '1px solid rgba(213, 0, 0, 0.35)',
+                backgroundColor: 'rgba(213, 0, 0, 0.16)',
+                border: '1px solid rgba(247, 188, 96, 0.45)',
                 borderRadius: 'var(--radius-md)',
                 padding: '1rem 1.25rem',
                 marginBottom: '1.75rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1rem',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
               }}
             >
               <span style={{ fontSize: '2rem' }}>🎄</span>
-              <div>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.7rem', color: '#ff6b75', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  MENÚS DE TEMPORADA & KATXOPO
-                </span>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.7rem', color: '#ff757f', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                    MENÚS DE TEMPORADA & KATXOPO
+                  </span>
+                  <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.7rem', color: 'var(--color-brass)', fontWeight: 700, textDecoration: 'underline' }}>
+                    Ver Menús (Desde 22€) ➔
+                  </span>
+                </div>
                 <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.85rem', color: 'var(--color-cream)', lineHeight: 1.4 }}>
-                  Disponibles menús especiales de grupo y catering para empresas y cuadrillas. Consulta el cartel oficial y reserva tu mesa con antelación.
+                  Disponibles menús especiales de grupo y catering para empresas y cuadrillas. Pulsa para consultar los menús completos y precios oficiales.
                 </p>
               </div>
             </div>
@@ -195,14 +207,21 @@ export default function GruposBloque() {
 
             {/* Cartel de Navidad & Katxopo miniatura interactiva */}
             <div
+              role="button"
+              tabIndex={0}
+              onClick={() => window.dispatchEvent(new CustomEvent('open-navidad-modal', { detail: { tab: 'poster' } }))}
+              onKeyDown={(e) => e.key === 'Enter' && window.dispatchEvent(new CustomEvent('open-navidad-modal', { detail: { tab: 'poster' } }))}
+              className="grupos-cartel-miniatura-trigger"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1rem',
                 padding: '0.85rem 1rem',
-                backgroundColor: 'rgba(26, 23, 21, 0.8)',
-                border: '1px solid rgba(247, 188, 96, 0.25)',
+                backgroundColor: 'rgba(26, 23, 21, 0.85)',
+                border: '1px solid rgba(247, 188, 96, 0.35)',
                 borderRadius: 'var(--radius-md)',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
               }}
             >
               <img
@@ -211,14 +230,19 @@ export default function GruposBloque() {
                 style={{ width: '56px', height: '76px', objectFit: 'cover', borderRadius: '4px', border: '1px solid rgba(247, 188, 96, 0.4)' }}
               />
               <div style={{ flex: 1 }}>
-                <span style={{ fontSize: '0.7rem', color: 'var(--color-brass)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  CARTELERA OFICIAL
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--color-brass)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                    CARTELERA OFICIAL
+                  </span>
+                  <span style={{ fontSize: '0.7rem', color: '#ff757f', fontWeight: 700 }}>
+                    Ver Cartel ➔
+                  </span>
+                </div>
                 <h4 style={{ fontFamily: 'var(--font-headline)', fontSize: '0.95rem', color: 'var(--color-cream)', margin: '0.2rem 0' }}>
                   Menús Especiales Navidad & Katxopo
                 </h4>
                 <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
-                  Plazas abiertas para cenas de empresa y cuadrillas.
+                  Plazas abiertas para cenas de empresa y cuadrillas. Pulsa para ampliar.
                 </p>
               </div>
             </div>

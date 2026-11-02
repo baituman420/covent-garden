@@ -77,6 +77,17 @@ export default function Header({ isSubpage = false }) {
               {item.label}
             </a>
           ))}
+          <button
+            type="button"
+            className="mobile-nav-link mobile-nav-navidad-highlight"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.dispatchEvent(new CustomEvent('open-navidad-modal'));
+            }}
+          >
+            <span>🎄 Menús Navidad & Katxopo</span>
+            <span className="mobile-nav-price-tag">Desde 22€ ➔</span>
+          </button>
         </nav>
       )}
     </header>

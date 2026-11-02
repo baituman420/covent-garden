@@ -26,6 +26,18 @@ export default function NavidadModal() {
     }
   }, []);
 
+  // Escuchar eventos globales para abrir el modal desde cualquier botón o enlace de la web
+  useEffect(() => {
+    const handleCustomOpen = (e) => {
+      setIsOpen(true);
+      if (e.detail?.tab) {
+        setActiveTab(e.detail.tab);
+      }
+    };
+    window.addEventListener('open-navidad-modal', handleCustomOpen);
+    return () => window.removeEventListener('open-navidad-modal', handleCustomOpen);
+  }, []);
+
   // Manejo de tecla Escape
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -35,6 +47,17 @@ export default function NavidadModal() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
+  // Prevenir scroll de fondo en body cuando el modal está abierto en móvil
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
   }, [isOpen]);
 
   const handleClose = () => {
@@ -50,19 +73,28 @@ export default function NavidadModal() {
 
   return (
     <>
-      {/* Botón flotante persistente para reabrir la ventana emergente */}
-      <button
-        type="button"
-        onClick={handleOpen}
-        className="navidad-floating-trigger"
-        aria-label="Ver Menús Especiales de Navidad y Katxopo"
-        title="Ver Menús Especiales de Navidad y Katxopo"
-      >
-        <span className="navidad-pulse-dot" />
-        <span className="navidad-trigger-icon">🎄</span>
-        <span className="navidad-trigger-text">Menús Navidad & Katxopo</span>
-        <span className="navidad-trigger-price">Desde 22€</span>
-      </button>
+      {/* Botón flotante persistente: solo visible cuando el modal NO está abierto */}
+      {!isOpen && (
+        <button
+          type="button"
+          onClick={handleOpen}
+          className="navidad-floating-trigger"
+          aria-label="Ver Menús Especiales de Navidad y Katxopo"
+          title="Ver Menús Especiales de Navidad y Katxopo"
+        >
+          <div className="navidad-trigger-content">
+            <span className="navidad-pulse-dot" />
+            <span className="navidad-trigger-text">
+              <span className="trigger-text-full">Menús Navidad & Katxopo</span>
+              <span className="trigger-text-compact">Menús Navidad</span>
+            </span>
+          </div>
+          <div className="navidad-trigger-badge">
+            <span className="navidad-trigger-price">Desde 22€</span>
+            <span className="navidad-trigger-chevron">➔</span>
+          </div>
+        </button>
+      )}
 
       {/* Ventana Emergente Modal */}
       {isOpen && (
@@ -76,34 +108,29 @@ export default function NavidadModal() {
           aria-labelledby="navidad-modal-title"
         >
           <div className="navidad-modal-dialog">
-            {/* Header del Modal */}
+            {/* Header Fijo del Modal */}
             <div className="navidad-modal-header">
-              <div className="navidad-modal-badge">
-                <span>{navidadContent.badge}</span>
-                <span className="navidad-date-tag">Hasta final de enero</span>
+              <div className="navidad-modal-header-main">
+                <div className="navidad-modal-badge">
+                  <span className="badge-text">{navidadContent.badge}</span>
+                  <span className="navidad-date-tag">Hasta final de enero</span>
+                </div>
+                <h3 id="navidad-modal-title" className="navidad-modal-title">
+                  {navidadContent.title}
+                </h3>
               </div>
               <button
                 type="button"
                 onClick={handleClose}
                 className="navidad-modal-close"
-                aria-label="Cerrar ventana"
+                aria-label="Cerrar ventana emergente"
               >
-                <span className="material-symbols-outlined">close</span>
+                <span className="close-glyph">✕</span>
               </button>
             </div>
 
-            <div className="navidad-modal-body">
-              {/* Título y subtítulo */}
-              <div className="navidad-modal-intro">
-                <h3 id="navidad-modal-title" className="navidad-modal-title">
-                  {navidadContent.title}
-                </h3>
-                <p className="navidad-modal-sub">
-                  {navidadContent.subtitle}
-                </p>
-              </div>
-
-              {/* Selector de pestañas */}
+            {/* Pestañas de Selección de Menús */}
+            <div className="navidad-tabs-wrapper">
               <div className="navidad-tabs-bar">
                 <button
                   type="button"
@@ -111,7 +138,8 @@ export default function NavidadModal() {
                   onClick={() => setActiveTab('katxopo')}
                 >
                   <span className="tab-pill-icon">🥩</span>
-                  <span>Menú Katxopo (22€ / 24€)</span>
+                  <span className="tab-label-full">Menú Katxopo (22€ / 24€)</span>
+                  <span className="tab-label-mobile">Katxopo (22€/24€)</span>
                 </button>
                 <button
                   type="button"
@@ -119,7 +147,8 @@ export default function NavidadModal() {
                   onClick={() => setActiveTab('navidad')}
                 >
                   <span className="tab-pill-icon">🍷</span>
-                  <span>Menú Navidad (36€)</span>
+                  <span className="tab-label-full">Menú Navidad (36€)</span>
+                  <span className="tab-label-mobile">Navidad (36€)</span>
                 </button>
                 <button
                   type="button"
@@ -127,11 +156,18 @@ export default function NavidadModal() {
                   onClick={() => setActiveTab('poster')}
                 >
                   <span className="tab-pill-icon">📜</span>
-                  <span>Cartel Original</span>
+                  <span className="tab-label-full">Cartel Original</span>
+                  <span className="tab-label-mobile">Cartel</span>
                 </button>
               </div>
+            </div>
 
-              {/* Contenido de pestañas */}
+            {/* Cuerpo Scrollable del Modal */}
+            <div className="navidad-modal-body">
+              <p className="navidad-modal-sub">
+                {navidadContent.subtitle}
+              </p>
+
               <div className="navidad-tab-content">
                 {activeTab === 'katxopo' && (
                   <div className="navidad-card-detail">
@@ -252,37 +288,37 @@ export default function NavidadModal() {
                   </div>
                 )}
               </div>
+            </div>
 
-              {/* Footer con llamada a la acción */}
-              <div className="navidad-modal-footer">
-                <div className="navidad-footer-info">
-                  <span className="material-symbols-outlined" style={{ color: 'var(--color-brass)' }}>
-                    phone_in_talk
-                  </span>
-                  <div>
-                    <span className="info-label">RESERVAS DIRECTAS (JOSU):</span>
-                    <strong className="info-val">{navidadContent.reservasPhone}</strong>
-                  </div>
-                </div>
-
-                <div className="navidad-footer-actions">
-                  <a
-                    href={`tel:${navidadContent.reservasPhone}`}
-                    className="btn-primary"
-                    style={{ padding: '0.75rem 1.5rem', fontSize: '0.85rem' }}
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px', marginRight: '0.4rem' }}>call</span>
-                    <span>Llamar Ahora ({navidadContent.reservasPhone})</span>
+            {/* Footer Fijo / Sticky en la Base */}
+            <div className="navidad-modal-footer">
+              <div className="navidad-footer-info">
+                <span className="material-symbols-outlined footer-phone-icon">
+                  phone_in_talk
+                </span>
+                <div className="footer-info-text">
+                  <span className="info-label">RESERVAS DIRECTAS (JOSU):</span>
+                  <a href={`tel:${navidadContent.reservasPhone.replace(/\s+/g, '')}`} className="info-val-link">
+                    {navidadContent.reservasPhone}
                   </a>
-                  <button
-                    type="button"
-                    onClick={handleClose}
-                    className="btn-secondary"
-                    style={{ padding: '0.75rem 1.25rem', fontSize: '0.85rem' }}
-                  >
-                    Cerrar
-                  </button>
                 </div>
+              </div>
+
+              <div className="navidad-footer-actions">
+                <a
+                  href={`tel:${navidadContent.reservasPhone.replace(/\s+/g, '')}`}
+                  className="btn-primary navidad-call-btn"
+                >
+                  <span className="material-symbols-outlined">call</span>
+                  <span>Llamar Ahora ({navidadContent.reservasPhone})</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="btn-secondary navidad-close-btn"
+                >
+                  Cerrar
+                </button>
               </div>
             </div>
           </div>

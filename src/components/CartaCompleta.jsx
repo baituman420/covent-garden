@@ -228,6 +228,17 @@ export default function CartaCompleta() {
               </p>
             </div>
           </div>
+
+          {/* Banner Especial de Menús de Navidad y Katxopo */}
+          <button
+            type="button"
+            className="carta-navidad-callout-btn"
+            onClick={() => window.dispatchEvent(new CustomEvent('open-navidad-modal'))}
+          >
+            <span className="navidad-callout-spark">🎄 TEMPORADA</span>
+            <span className="navidad-callout-text">¿Buscas los Menús Especiales de Navidad & Katxopo Gigante?</span>
+            <span className="navidad-callout-action">Consultar Menús y Precios ➔</span>
+          </button>
         </div>
 
         {/* Bloque Destacado de los Carteles del Dueño: SIN CUADRO, PUROS CARTELES CON EFECTO GSAP */}
