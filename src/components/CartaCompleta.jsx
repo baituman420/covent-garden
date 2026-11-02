@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cartaContent, cartelesContent, site } from '../data/siteContent.js';
@@ -20,94 +20,192 @@ const categoryIcons = {
 
 // Resúmenes rápidos de oferta por categoría
 const categorySummaries = {
-  raciones: '10 raciones crujientes y tablas ibéricas para compartir',
-  burguers: '10 hamburguesas artesanas y smash con patatas y bebida',
-  pizzas: '10 pizzas al horno servidas sobre tabla noble de madera',
-  platos: '10 platos combinados abundantes con receta de la casa',
-  'bocatas-sandwiches': '12 sándwiches y bocadillos rústicos con bebida y patatas',
-  ensaladas: '7 ensaladas templadas y frescas con pan y bebida',
-  postres: 'Tartas caseras diarias @lastartasdelcovent y cafés especiales',
+  raciones: 'Raciones crujientes, tablas ibéricas y aperitivos para compartir',
+  burguers: 'Hamburguesas artesanas y smash con patatas y bebida incluida',
+  pizzas: 'Pizzas al horno sobre tabla noble de madera con bebida incluida',
+  platos: 'Platos combinados abundantes y recetas caseras de la casa',
+  'bocatas-sandwiches': 'Sándwiches y bocadillos rústicos con patatas y bebida',
+  ensaladas: 'Ensaladas frescas y templadas de la huerta con pan y bebida',
+  postres: 'Tartas caseras diarias @lastartasdelcovent y repostería artesana',
 };
 
 export default function CartaCompleta() {
   const baseUrl = import.meta.env.BASE_URL;
-  
-  // Estado de secciones desplegadas (por defecto abrimos 'burguers' como escaparate de bienvenida)
-  const [openSections, setOpenSections] = useState({
-    burguers: true,
-  });
-  const [activeFocusedCat, setActiveFocusedCat] = useState('burguers');
+  const categories = cartaContent.categories;
 
+  // Estado del carrusel de categorías (0 a categories.length - 1)
+  const [activeCatIndex, setActiveCatIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState(1); // 1 = adelante, -1 = atrás
+  const [viewMode, setViewMode] = useState('carousel'); // 'carousel' o 'grid'
+  const [activeDishIndex, setActiveDishIndex] = useState(0);
+
+  // Referencias para animaciones GSAP y DOM
   const sectionRef = useRef(null);
-  const chapterRefs = useRef({});
+  const carouselStageRef = useRef(null);
+  const slideRef = useRef(null);
+  const dishesTrackRef = useRef(null);
+  const tabsBarRef = useRef(null);
   const postersRef = useRef(null);
   const posterLeftRef = useRef(null);
   const posterRightRef = useRef(null);
 
-  const categories = cartaContent.categories;
+  // Referencias para detección de gestos táctiles (Swipe)
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const touchEndX = useRef(0);
 
-  // Toggle individual de una sección
-  const toggleSection = (catId) => {
-    setOpenSections((prev) => {
-      const isCurrentlyOpen = !!prev[catId];
-      const nextState = { ...prev, [catId]: !isCurrentlyOpen };
-      return nextState;
-    });
-    setActiveFocusedCat(catId);
-  };
+  const activeCategory = categories[activeCatIndex] || categories[0];
 
-  // Selección directa desde la botonera superior o pie de sección
-  const selectAndScrollToCategory = (catId) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [catId]: true,
-    }));
-    setActiveFocusedCat(catId);
+  // Cambiar de categoría con dirección para GSAP
+  const goToCategory = useCallback((index, dir = null) => {
+    if (index < 0) {
+      index = categories.length - 1;
+    } else if (index >= categories.length) {
+      index = 0;
+    }
 
-    // Desplazamiento suave con compensación por cabecera fija
-    setTimeout(() => {
-      const targetEl = chapterRefs.current[catId];
-      if (targetEl) {
-        const headerOffset = 95;
-        const elementPosition = targetEl.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        window.scrollTo({
-          top: offsetPosition,
+    const calculatedDir = dir !== null ? dir : index > activeCatIndex ? 1 : -1;
+    setSlideDirection(calculatedDir);
+    setActiveCatIndex(index);
+    setActiveDishIndex(0);
+
+    // Centrar suavemente la pestaña activa en la barra horizontal
+    if (tabsBarRef.current) {
+      const activeTabBtn = tabsBarRef.current.children[index];
+      if (activeTabBtn) {
+        activeTabBtn.scrollIntoView({
           behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center',
         });
       }
-    }, 60);
-  };
+    }
 
-  // Desplegar todas las secciones a la vez
-  const handleExpandAll = () => {
-    const allOpen = {};
-    categories.forEach((cat) => {
-      allOpen[cat.id] = true;
+    // Resetear el scroll del carrusel de platos al cambiar de categoría
+    if (dishesTrackRef.current) {
+      dishesTrackRef.current.scrollTo({ left: 0, behavior: 'instant' });
+    }
+  }, [activeCatIndex, categories.length]);
+
+  const handlePrevCategory = () => goToCategory(activeCatIndex - 1, -1);
+  const handleNextCategory = () => goToCategory(activeCatIndex + 1, 1);
+
+  // Desplazamiento horizontal del carrusel de platos
+  const scrollDishes = (direction) => {
+    if (!dishesTrackRef.current) return;
+    const cardWidth = dishesTrackRef.current.querySelector('.dish-carousel-card')?.offsetWidth || 300;
+    const scrollAmount = cardWidth + 16;
+    dishesTrackRef.current.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth',
     });
-    setOpenSections(allOpen);
   };
 
-  // Plegar todas las secciones
-  const handleCollapseAll = () => {
-    setOpenSections({});
+  // Monitorear posición del scroll en el carrusel de platos para dots/indicadores
+  const handleDishesScroll = () => {
+    if (!dishesTrackRef.current) return;
+    const { scrollLeft } = dishesTrackRef.current;
+    const cardWidth = (dishesTrackRef.current.querySelector('.dish-carousel-card')?.offsetWidth || 300) + 16;
+    const newIdx = Math.round(scrollLeft / cardWidth);
+    if (newIdx !== activeDishIndex && newIdx >= 0 && newIdx < activeCategory.items.length) {
+      setActiveDishIndex(newIdx);
+    }
   };
 
-  // Efecto GSAP para carteles y referencias
+  // Gestos táctiles en el escenario de la carta
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+    const diffX = touchEndX.current - touchStartX.current;
+    const diffY = e.changedTouches[0].clientY - touchStartY.current;
+
+    if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+      if (diffX > 0) {
+        handlePrevCategory();
+      } else {
+        handleNextCategory();
+      }
+    }
+  };
+
+  // Transición animada GSAP al cambiar de categoría
+  useEffect(() => {
+    if (!slideRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        slideRef.current,
+        {
+          opacity: 0,
+          x: slideDirection * 35,
+          scale: 0.985,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          scale: 1,
+          duration: 0.4,
+          ease: 'power2.out',
+          clearProps: 'transform',
+        }
+      );
+
+      const cards = slideRef.current.querySelectorAll('.dish-carousel-card');
+      if (cards.length > 0) {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 16 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.035,
+            duration: 0.35,
+            ease: 'power1.out',
+            clearProps: 'all',
+          }
+        );
+      }
+    }, carouselStageRef);
+
+    return () => ctx.revert();
+  }, [activeCatIndex, slideDirection, viewMode]);
+
+  // Soporte de navegación por teclado (Flechas izquierda / derecha)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!carouselStageRef.current) return;
+      const rect = carouselStageRef.current.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView) return;
+
+      if (e.key === 'ArrowLeft') {
+        handlePrevCategory();
+      } else if (e.key === 'ArrowRight') {
+        handleNextCategory();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeCatIndex, handleNextCategory, handlePrevCategory]);
+
+  // Efecto GSAP para carteles vintage del dueño
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Entrada de carteles vintage del dueño
       if (posterLeftRef.current && posterRightRef.current && postersRef.current) {
         gsap.fromTo(
           posterLeftRef.current,
-          { opacity: 0, y: 50, rotateZ: -5, rotateY: -8, scale: 0.94 },
+          { opacity: 0, y: 40, rotateZ: -4, scale: 0.95 },
           {
             opacity: 1,
             y: 0,
             rotateZ: -1.5,
-            rotateY: 0,
             scale: 1,
-            duration: 1.1,
+            duration: 1,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: postersRef.current,
@@ -119,15 +217,14 @@ export default function CartaCompleta() {
 
         gsap.fromTo(
           posterRightRef.current,
-          { opacity: 0, y: 50, rotateZ: 5, rotateY: 8, scale: 0.94 },
+          { opacity: 0, y: 40, rotateZ: 4, scale: 0.95 },
           {
             opacity: 1,
             y: 0,
             rotateZ: 1.5,
-            rotateY: 0,
             scale: 1,
-            duration: 1.1,
-            delay: 0.15,
+            duration: 1,
+            delay: 0.1,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: postersRef.current,
@@ -142,7 +239,6 @@ export default function CartaCompleta() {
     return () => ctx.revert();
   }, []);
 
-  // Interacción 3D suave al mover el ratón sobre los carteles
   const handlePosterMouseMove = (e) => {
     if (!postersRef.current) return;
     const rect = postersRef.current.getBoundingClientRect();
@@ -153,7 +249,7 @@ export default function CartaCompleta() {
       gsap.to(posterLeftRef.current, {
         rotateY: x * 10 - 1.5,
         rotateX: -y * 8,
-        y: -y * 6,
+        y: -y * 5,
         duration: 0.35,
         ease: 'power1.out',
       });
@@ -162,7 +258,7 @@ export default function CartaCompleta() {
       gsap.to(posterRightRef.current, {
         rotateY: x * 10 + 1.5,
         rotateX: -y * 8,
-        y: -y * 6,
+        y: -y * 5,
         duration: 0.35,
         ease: 'power1.out',
       });
@@ -176,7 +272,7 @@ export default function CartaCompleta() {
         rotateX: 0,
         rotateZ: -1.5,
         y: 0,
-        duration: 0.7,
+        duration: 0.6,
         ease: 'power2.out',
       });
     }
@@ -186,25 +282,22 @@ export default function CartaCompleta() {
         rotateX: 0,
         rotateZ: 1.5,
         y: 0,
-        duration: 0.7,
+        duration: 0.6,
         ease: 'power2.out',
       });
     }
   };
-
-  // Contar cuántas secciones están abiertas actualmente
-  const totalOpenCount = Object.values(openSections).filter(Boolean).length;
 
   return (
     <section id="carta" ref={sectionRef} className="carta-section section-padding">
       <div className="container">
         {/* Cabecera de la Sección Gastronómica */}
         <div className="carta-header">
-          <div className="tag-header" style={{ marginBottom: '0.75rem' }}>
+          <div className="tag-header" style={{ marginBottom: '0.65rem' }}>
             {cartaContent.tag}
           </div>
 
-          <h2 className="title-display" style={{ color: 'var(--color-cream)', marginBottom: '0.75rem' }}>
+          <h2 className="title-display" style={{ color: 'var(--color-cream)', marginBottom: '0.65rem' }}>
             {cartaContent.title}
           </h2>
 
@@ -212,7 +305,7 @@ export default function CartaCompleta() {
             {cartaContent.subtitle}
           </p>
 
-          <p className="body-copy" style={{ maxWidth: '44rem', margin: '0 auto 1.75rem auto', color: 'var(--color-text-muted)' }}>
+          <p className="body-copy" style={{ maxWidth: '44rem', margin: '0 auto 1.5rem auto', color: 'var(--color-text-muted)' }}>
             {cartaContent.description}
           </p>
 
@@ -241,7 +334,7 @@ export default function CartaCompleta() {
           </button>
         </div>
 
-        {/* Bloque Destacado de los Carteles del Dueño: SIN CUADRO, PUROS CARTELES CON EFECTO GSAP */}
+        {/* Bloque Destacado de los Carteles del Dueño */}
         <div className="carteles-standalone-section">
           <div className="carteles-standalone-header">
             <span className="section-tag section-tag-gold">TRADICIÓN EN LA BARRA DE INDAUTXU</span>
@@ -257,7 +350,6 @@ export default function CartaCompleta() {
             onMouseMove={handlePosterMouseMove}
             onMouseLeave={handlePosterMouseLeave}
           >
-            {/* Cartel 1: Rabas & Marianitos */}
             <div ref={posterLeftRef} className="cartel-item-card cartel-left">
               <div className="cartel-stud" />
               <div className="cartel-frame">
@@ -275,7 +367,6 @@ export default function CartaCompleta() {
               </div>
             </div>
 
-            {/* Cartel 2: Marianitos Preparados */}
             <div ref={posterRightRef} className="cartel-item-card cartel-right">
               <div className="cartel-stud" />
               <div className="cartel-frame">
@@ -295,262 +386,328 @@ export default function CartaCompleta() {
           </div>
         </div>
 
-        {/* CINTA RÁPIDA / SELECTOR FIJO DE SECCIONES (Permite seleccionar cualquier sección una vez desplegado) */}
-        <div className="carta-quick-ribbon-container">
-          <div className="carta-quick-ribbon">
-            <div className="ribbon-label-box">
-              <span className="material-symbols-outlined ribbon-icon">menu_book</span>
-              <span className="ribbon-text">SECCIONES:</span>
+        {/* =========================================================================
+            CARRUSEL GASTRONÓMICO PRINCIPAL (REDUCCIÓN VERTICAL & EXPERIENCIA DINÁMICA)
+           ========================================================================= */}
+        <div className="carta-carousel-section" ref={carouselStageRef}>
+          {/* BARRA DE NAVEGACIÓN Y SELECTOR DE CATEGORÍAS */}
+          <div className="carousel-nav-control-bar">
+            <div className="carousel-control-header">
+              <div className="carousel-progress-tag">
+                <span className="material-symbols-outlined nav-symbol">restaurant</span>
+                <span className="progress-number">
+                  CATEGORÍA <strong>{String(activeCatIndex + 1).padStart(2, '0')}</strong> / {String(categories.length).padStart(2, '0')}
+                </span>
+                <span className="progress-divider">·</span>
+                <span className="progress-current-name">{activeCategory.name}</span>
+              </div>
+
+              <div className="carousel-arrows-cluster">
+                <button
+                  type="button"
+                  className="carousel-arrow-btn"
+                  onClick={handlePrevCategory}
+                  title="Categoría anterior (o usa flecha izquierda)"
+                  aria-label="Categoría anterior"
+                >
+                  <span className="material-symbols-outlined">chevron_left</span>
+                  <span className="arrow-btn-text">Anterior</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="carousel-arrow-btn"
+                  onClick={handleNextCategory}
+                  title="Categoría siguiente (o usa flecha derecha)"
+                  aria-label="Categoría siguiente"
+                >
+                  <span className="arrow-btn-text">Siguiente</span>
+                  <span className="material-symbols-outlined">chevron_right</span>
+                </button>
+              </div>
             </div>
 
-            <div className="ribbon-pills-scroll" role="tablist" aria-label="Navegación rápida de secciones">
-              {categories.map((cat) => {
-                const isOpen = !!openSections[cat.id];
-                const isFocused = activeFocusedCat === cat.id;
+            {/* Píldoras horizontales de salto directo a cada categoría */}
+            <div
+              className="carousel-category-tabs-track"
+              ref={tabsBarRef}
+              role="tablist"
+              aria-label="Selector de categorías de la carta"
+            >
+              {categories.map((cat, idx) => {
+                const isActive = idx === activeCatIndex;
                 return (
                   <button
                     key={cat.id}
                     type="button"
                     role="tab"
-                    aria-selected={isFocused}
-                    className={`ribbon-tab-btn ${isOpen ? 'is-open' : ''} ${isFocused ? 'is-focused' : ''}`}
-                    onClick={() => selectAndScrollToCategory(cat.id)}
-                    title={`Ver sección ${cat.name}`}
+                    aria-selected={isActive}
+                    className={`carousel-tab-pill ${isActive ? 'is-active' : ''}`}
+                    onClick={() => goToCategory(idx)}
                   >
                     <span className="material-symbols-outlined tab-icon">
                       {categoryIcons[cat.id] || 'restaurant'}
                     </span>
-                    <span className="tab-label">{cat.name}</span>
-                    {isOpen && <span className="open-dot" title="Sección desplegada" />}
+                    <span className="tab-name">{cat.name}</span>
+                    <span className="tab-count">{cat.items.length}</span>
+                    {isActive && <span className="tab-active-glow" />}
                   </button>
                 );
               })}
             </div>
-
-            {/* Acciones globales de despliegue */}
-            <div className="ribbon-actions">
-              {totalOpenCount < categories.length ? (
-                <button
-                  type="button"
-                  onClick={handleExpandAll}
-                  className="ribbon-action-btn"
-                  title="Abrir todas las secciones"
-                >
-                  <span className="material-symbols-outlined">unfold_more</span>
-                  <span className="action-label">Desplegar Todo</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleCollapseAll}
-                  className="ribbon-action-btn"
-                  title="Plegar todas las secciones"
-                >
-                  <span className="material-symbols-outlined">unfold_less</span>
-                  <span className="action-label">Plegar Todo</span>
-                </button>
-              )}
-            </div>
           </div>
-        </div>
 
-        {/* LISTADO DE SECCIONES DESPLEGABLES CON EFECTO ORIGINAL */}
-        <div className="carta-accordion-stack">
-          {categories.map((category, catIndex) => {
-            const isOpen = !!openSections[category.id];
-            const prevCategory = catIndex > 0 ? categories[catIndex - 1] : null;
-            const nextCategory = catIndex < categories.length - 1 ? categories[catIndex + 1] : null;
-
-            return (
-              <div
-                key={category.id}
-                ref={(el) => (chapterRefs.current[category.id] = el)}
-                className={`carta-deployable-chapter ${isOpen ? 'is-expanded' : 'is-collapsed'}`}
-              >
-                {/* Cabecera / Plegador Interactivo de la Sección */}
-                <button
-                  type="button"
-                  onClick={() => toggleSection(category.id)}
-                  className="chapter-header-bar"
-                  aria-expanded={isOpen}
-                  aria-controls={`chapter-content-${category.id}`}
-                >
-                  <div className="chapter-header-left">
-                    <div className="chapter-seal-wrap">
-                      <span className="material-symbols-outlined chapter-seal-icon">
-                        {categoryIcons[category.id] || 'restaurant'}
-                      </span>
-                    </div>
-
-                    <div className="chapter-meta">
-                      <div className="chapter-badge-line">
-                        <span className="chapter-badge">{category.badge}</span>
-                        <span className="chapter-dishes-count">
-                          {category.items.length} platos
-                        </span>
-                      </div>
-                      <h3 className="chapter-title">{category.name}</h3>
-                      <p className="chapter-summary">
-                        {categorySummaries[category.id] || category.shortDesc}
-                      </p>
-                    </div>
+          {/* ESCENARIO DEL SLIDE ACTIVO (UNA SOLA CATEGORÍA A LA VEZ) */}
+          <div
+            className="carousel-slide-stage"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div ref={slideRef} className="carousel-slide-content">
+              {/* Encabezado de la Categoría Activa */}
+              <div className="slide-category-header">
+                <div className="slide-category-title-row">
+                  <div className="slide-seal-wrap">
+                    <span className="material-symbols-outlined slide-seal-icon">
+                      {categoryIcons[activeCategory.id] || 'restaurant'}
+                    </span>
                   </div>
 
-                  {/* Botón de estado de despliegue */}
-                  <div className="chapter-header-right">
-                    <div className={`chapter-toggle-pill ${isOpen ? 'active-pill' : ''}`}>
-                      <span className="toggle-text">
-                        {isOpen ? 'Plegar Carta' : 'Desplegar Sección'}
-                      </span>
-                      <span className={`material-symbols-outlined toggle-chevron ${isOpen ? 'chevron-up' : ''}`}>
-                        expand_more
-                      </span>
+                  <div className="slide-title-meta">
+                    <div className="slide-badges-wrap">
+                      <span className="slide-badge">{activeCategory.badge}</span>
+                      <span className="slide-dish-count">{activeCategory.items.length} platos disponibles</span>
                     </div>
+                    <h3 className="slide-category-name">{activeCategory.name}</h3>
+                    <p className="slide-category-desc">
+                      {categorySummaries[activeCategory.id] || activeCategory.shortDesc}
+                    </p>
                   </div>
-                </button>
+                </div>
 
-                {/* Contenedor con Despliegue Suave y Efecto Folio Tabernero */}
-                <div
-                  id={`chapter-content-${category.id}`}
-                  className={`chapter-unfold-wrapper ${isOpen ? 'is-open' : ''}`}
-                >
-                  <div className="chapter-unfold-inner">
-                    {/* Línea dorada de brillo al desplegar */}
-                    <div className="unfold-shimmer-sweep" />
+                {activeCategory.note && (
+                  <div className="slide-category-note">
+                    <span className="material-symbols-outlined note-icon">check_circle</span>
+                    <span>{activeCategory.note}</span>
+                  </div>
+                )}
+              </div>
 
-                    {/* Descripción y notas */}
-                    <div className="chapter-intro-block">
-                      {category.shortDesc && (
-                        <p className="chapter-expanded-desc">{category.shortDesc}</p>
-                      )}
-                      {category.note && (
-                        <div className="category-note">
-                          <span className="material-symbols-outlined">info</span>
-                          <span>{category.note}</span>
+              {/* Tira Visual Compacta de Referencias Fotográficas Reales */}
+              {activeCategory.visualReferences && activeCategory.visualReferences.length > 0 && (
+                <div className="slide-visual-references-strip">
+                  <div className="visual-strip-compact-header">
+                    <span className="visual-strip-label">
+                      <span className="material-symbols-outlined">photo_camera</span>
+                      <span>FOTOGRAFÍAS REALES EN COVENT GARDEN</span>
+                    </span>
+                    <span className="visual-strip-hint">Elaborado al momento en Indautxu</span>
+                  </div>
+
+                  <div className="visual-compact-grid">
+                    {activeCategory.visualReferences.map((refItem, refIdx) => (
+                      <div key={refIdx} className="visual-compact-card">
+                        <div className="visual-compact-img-wrap">
+                          <img
+                            src={`${baseUrl}${refItem.src}`}
+                            alt={refItem.title}
+                            loading="lazy"
+                            className="visual-compact-img"
+                          />
+                          <span className="visual-compact-badge">{refItem.badge}</span>
+                          <div className="visual-compact-gradient" />
                         </div>
-                      )}
-                    </div>
-
-                    {/* Referencias Visuales de la Sección (Galería Deal-In) */}
-                    {category.visualReferences && category.visualReferences.length > 0 && (
-                      <div className="category-visual-strip">
-                        <div className="visual-strip-header">
-                          <span className="visual-strip-label">
-                            <span className="material-symbols-outlined">photo_camera</span>
-                            <span>REFERENCIAS VISUALES · {category.name.toUpperCase()}</span>
-                          </span>
-                          <span className="visual-strip-hint">Fotografías reales tomadas en Covent Garden</span>
-                        </div>
-
-                        <div className="visual-strip-grid">
-                          {category.visualReferences.map((refItem, refIdx) => (
-                            <div key={refIdx} className="visual-ref-card">
-                              <div className="visual-ref-img-wrap">
-                                <img
-                                  src={`${baseUrl}${refItem.src}`}
-                                  alt={refItem.title}
-                                  loading="lazy"
-                                  className="visual-ref-img"
-                                />
-                                <span className="visual-ref-badge">{refItem.badge}</span>
-                                <div className="visual-ref-overlay" />
-                              </div>
-                              <div className="visual-ref-caption">
-                                <h4 className="visual-ref-title">{refItem.title}</h4>
-                                <p className="visual-ref-desc">{refItem.desc}</p>
-                              </div>
-                            </div>
-                          ))}
+                        <div className="visual-compact-caption">
+                          <h4 className="visual-compact-title">{refItem.title}</h4>
+                          <p className="visual-compact-desc">{refItem.desc}</p>
                         </div>
                       </div>
-                    )}
+                    ))}
+                  </div>
+                </div>
+              )}
 
-                    {/* Rejilla de Platos de la Categoría (Estrictamente SIN PRECIOS y SIN IMÁGENES DENTRO DEL PLATO) */}
-                    <div className="carta-items-grid">
-                      {category.items.map((item, idx) => (
-                        <article key={idx} className="carta-item-card typography-card">
-                          <div className="carta-item-content">
-                            <div className="carta-item-header">
-                              <h4 className="carta-item-title">
-                                <span className="dish-bullet" />
-                                <span>{item.name}</span>
-                              </h4>
-                            </div>
+              {/* ENCABEZADO DE PLATOS CON SELECTOR DE MODO (CARRUSEL / CUADRÍCULA) */}
+              <div className="slide-dishes-toolbar">
+                <div className="toolbar-left">
+                  <span className="dishes-section-label">
+                    <span className="dish-bullet" />
+                    <span>PLATOS DE LA CATEGORÍA</span>
+                  </span>
+                  <span className="dishes-swipe-hint">
+                    {viewMode === 'carousel' ? '↔ Desliza horizontalmente para ver todos los platos' : 'Mostrando lista completa'}
+                  </span>
+                </div>
 
-                            <p className="carta-item-desc">{item.desc}</p>
+                <div className="toolbar-actions">
+                  <div className="view-mode-toggle">
+                    <button
+                      type="button"
+                      className={`mode-btn ${viewMode === 'carousel' ? 'is-active' : ''}`}
+                      onClick={() => setViewMode('carousel')}
+                      title="Ver en carrusel horizontal compacto"
+                    >
+                      <span className="material-symbols-outlined">view_carousel</span>
+                      <span className="mode-label">Carrusel</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`mode-btn ${viewMode === 'grid' ? 'is-active' : ''}`}
+                      onClick={() => setViewMode('grid')}
+                      title="Ver todos los platos en cuadrícula"
+                    >
+                      <span className="material-symbols-outlined">grid_view</span>
+                      <span className="mode-label">Cuadrícula</span>
+                    </button>
+                  </div>
 
-                            {item.tags && item.tags.length > 0 && (
-                              <div className="carta-item-tags">
-                                {item.tags.map((t, tIdx) => (
-                                  <span key={tIdx} className="carta-tag-pill">
-                                    {t}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </article>
-                      ))}
+                  {viewMode === 'carousel' && (
+                    <div className="dish-carousel-arrows">
+                      <button
+                        type="button"
+                        className="dish-arrow-btn"
+                        onClick={() => scrollDishes(-1)}
+                        title="Platos anteriores"
+                        aria-label="Platos anteriores"
+                      >
+                        <span className="material-symbols-outlined">arrow_back</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="dish-arrow-btn"
+                        onClick={() => scrollDishes(1)}
+                        title="Platos siguientes"
+                        aria-label="Platos siguientes"
+                      >
+                        <span className="material-symbols-outlined">arrow_forward</span>
+                      </button>
                     </div>
+                  )}
+                </div>
+              </div>
 
-                    {/* Navegación rápida al final de la sección desplegada para cambiar de categoría sin fricción */}
-                    <div className="chapter-bottom-nav">
-                      <div className="chapter-bottom-nav-inner">
-                        {prevCategory ? (
-                          <button
-                            type="button"
-                            onClick={() => selectAndScrollToCategory(prevCategory.id)}
-                            className="chapter-nav-btn prev-btn"
-                          >
-                            <span className="material-symbols-outlined">arrow_back</span>
-                            <span>Anterior: <strong>{prevCategory.name}</strong></span>
-                          </button>
-                        ) : (
-                          <div />
-                        )}
+              {/* CONTENEDOR DE PLATOS: CARRUSEL HORIZONTAL O CUADRÍCULA */}
+              {viewMode === 'carousel' ? (
+                <div className="dish-carousel-wrapper">
+                  <div
+                    ref={dishesTrackRef}
+                    className="dish-carousel-track"
+                    onScroll={handleDishesScroll}
+                  >
+                    {activeCategory.items.map((item, idx) => (
+                      <article key={idx} className="dish-carousel-card typography-card">
+                        <div className="dish-card-top">
+                          <span className="dish-index-badge">#{idx + 1}</span>
+                          <h4 className="dish-card-title">{item.name}</h4>
+                        </div>
 
-                        <div className="chapter-bottom-selector">
-                          <span className="selector-title">Cambiar de sección:</span>
-                          <div className="selector-pills">
-                            {categories.map((c) => (
-                              <button
-                                key={c.id}
-                                type="button"
-                                className={`selector-mini-pill ${c.id === category.id ? 'current' : ''}`}
-                                onClick={() => selectAndScrollToCategory(c.id)}
-                              >
-                                {c.name.split(' ')[0]}
-                              </button>
+                        <p className="dish-card-desc">{item.desc}</p>
+
+                        {item.tags && item.tags.length > 0 && (
+                          <div className="dish-card-tags">
+                            {item.tags.map((t, tIdx) => (
+                              <span key={tIdx} className="carta-tag-pill">
+                                {t}
+                              </span>
                             ))}
                           </div>
-                        </div>
-
-                        {nextCategory ? (
-                          <button
-                            type="button"
-                            onClick={() => selectAndScrollToCategory(nextCategory.id)}
-                            className="chapter-nav-btn next-btn"
-                          >
-                            <span>Siguiente: <strong>{nextCategory.name}</strong></span>
-                            <span className="material-symbols-outlined">arrow_forward</span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => selectAndScrollToCategory(categories[0].id)}
-                            className="chapter-nav-btn restart-btn"
-                          >
-                            <span>Volver a: <strong>{categories[0].name}</strong></span>
-                            <span className="material-symbols-outlined">arrow_upward</span>
-                          </button>
                         )}
-                      </div>
+                      </article>
+                    ))}
+                  </div>
+
+                  <div className="dish-carousel-pagination">
+                    <span className="pagination-text">
+                      Plato <strong>{activeDishIndex + 1}</strong> de <strong>{activeCategory.items.length}</strong>
+                    </span>
+                    <div className="pagination-dots">
+                      {activeCategory.items.map((_, pIdx) => (
+                        <button
+                          key={pIdx}
+                          type="button"
+                          className={`pagination-dot ${pIdx === activeDishIndex ? 'is-active' : ''}`}
+                          onClick={() => {
+                            if (dishesTrackRef.current) {
+                              const cardWidth = (dishesTrackRef.current.querySelector('.dish-carousel-card')?.offsetWidth || 300) + 16;
+                              dishesTrackRef.current.scrollTo({
+                                left: pIdx * cardWidth,
+                                behavior: 'smooth',
+                              });
+                            }
+                          }}
+                          aria-label={`Ir al plato ${pIdx + 1}`}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>
+              ) : (
+                <div className="carta-items-grid">
+                  {activeCategory.items.map((item, idx) => (
+                    <article key={idx} className="carta-item-card typography-card">
+                      <div className="carta-item-content">
+                        <div className="carta-item-header">
+                          <h4 className="carta-item-title">
+                            <span className="dish-bullet" />
+                            <span>{item.name}</span>
+                          </h4>
+                        </div>
+                        <p className="carta-item-desc">{item.desc}</p>
+                        {item.tags && item.tags.length > 0 && (
+                          <div className="carta-item-tags">
+                            {item.tags.map((t, tIdx) => (
+                              <span key={tIdx} className="carta-tag-pill">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+
+              {/* PIE DEL SLIDE: SALTO A CATEGORÍA ANTERIOR / SIGUIENTE */}
+              <div className="slide-footer-nav">
+                <button
+                  type="button"
+                  className="slide-footer-nav-btn prev-btn"
+                  onClick={handlePrevCategory}
+                >
+                  <span className="material-symbols-outlined">arrow_back</span>
+                  <span>
+                    Anterior: <strong>{categories[(activeCatIndex - 1 + categories.length) % categories.length].name}</strong>
+                  </span>
+                </button>
+
+                <div className="slide-footer-dots">
+                  {categories.map((c, dIdx) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      className={`category-indicator-pill ${dIdx === activeCatIndex ? 'active' : ''}`}
+                      onClick={() => goToCategory(dIdx)}
+                      title={`Ir a ${c.name}`}
+                    >
+                      {dIdx + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  className="slide-footer-nav-btn next-btn"
+                  onClick={handleNextCategory}
+                >
+                  <span>
+                    Siguiente: <strong>{categories[(activeCatIndex + 1) % categories.length].name}</strong>
+                  </span>
+                  <span className="material-symbols-outlined">arrow_forward</span>
+                </button>
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
 
         {/* Footer y Llamada de la Carta */}
