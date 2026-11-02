@@ -5,13 +5,16 @@ export default function Barra() {
   const baseUrl = import.meta.env.BASE_URL;
 
   return (
-    <section className="section-padding bg-dark">
+    <section id="barra" className="barra-section section-padding bg-dark">
       <div className="container">
-        {/* Header */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingBottom: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+        {/* Cabecera */}
+        <div className="barra-header-wrap">
           <div>
             <span className="section-tag section-tag-gold">{barraContent.tag}</span>
             <h2 className="section-heading">{barraContent.title}</h2>
+            <p className="body-copy" style={{ maxWidth: '44rem', marginTop: '0.5rem', color: 'var(--color-text-muted)' }}>
+              {barraContent.description}
+            </p>
           </div>
 
           <div className="category-tags">
@@ -23,43 +26,78 @@ export default function Barra() {
           </div>
         </div>
 
-        {/* Visual Grid */}
-        <div className="barra-grid">
-          {/* Big Bar Shot */}
-          <div className="image-card" style={{ minHeight: '380px' }}>
-            <img
-              src={`${baseUrl}${barraContent.mainImage.src}`}
-              alt={barraContent.mainImage.alt}
-              style={{ height: '100%', minHeight: '380px', objectFit: 'cover' }}
-            />
-            <div className="card-caption">
-              <span className="card-caption-title" style={{ color: 'var(--color-brass)' }}>
-                El Templo de Indautxu
-              </span>
-              <p className="card-caption-desc">{barraContent.mainImage.title}</p>
+        {/* Visual Grid Equilibrado */}
+        <div className="barra-grid-balanced">
+          {/* Columna Izquierda: Gran toma atmosférica de la barra de caoba */}
+          <div className="barra-main-card">
+            <div className="barra-main-img-wrap">
+              <img
+                src={`${baseUrl}${barraContent.mainImage.src}`}
+                alt={barraContent.mainImage.alt}
+                className="barra-main-img"
+                loading="lazy"
+              />
+              <div className="barra-main-scrim" />
+              <div className="barra-main-caption">
+                <span className="barra-caption-badge">
+                  <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>location_on</span>
+                  <span>EL TEMPLO DE INDAUTXU · DOCTOR AREILZA 28</span>
+                </span>
+                <h3 className="barra-caption-title">{barraContent.mainImage.title}</h3>
+                <p className="barra-caption-desc">{barraContent.mainImage.desc}</p>
+              </div>
             </div>
           </div>
 
-          {/* Brass Tap Accent Detail */}
-          <div style={{ padding: '1.25rem', backgroundColor: 'var(--color-bg-dark-container)', border: '1px solid rgba(247, 188, 96, 0.2)', borderRadius: 'var(--radius-lg)', display: 'flex', flexDirection: 'column', justifyBetween: 'space-between' }}>
-            <div style={{ position: 'relative', borderRadius: 'var(--radius-md)', overflow: 'hidden', height: '240px' }}>
-              <img
-                src={`${baseUrl}${barraContent.featureImage.src}`}
-                alt={barraContent.featureImage.alt}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <span style={{ position: 'absolute', top: '8px', right: '8px', padding: '0.25rem 0.5rem', backgroundColor: 'var(--color-oxblood)', color: 'var(--color-text-light)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', borderRadius: 'var(--radius-sm)' }}>
-                {barraContent.featureImage.badge}
-              </span>
+          {/* Columna Derecha: Stack completo de dos tarjetas de oficio cervecero y botillería */}
+          <div className="barra-sidebar-stack">
+            {/* Tarjeta 1: Grifos de Bronce */}
+            <div className="barra-accent-card">
+              <div className="barra-accent-thumb">
+                <img
+                  src={`${baseUrl}${barraContent.featureImage.src}`}
+                  alt={barraContent.featureImage.alt}
+                  className="barra-thumb-img"
+                  loading="lazy"
+                />
+                <span className="barra-accent-badge">{barraContent.featureImage.badge}</span>
+              </div>
+              <div className="barra-accent-body">
+                <h3 className="barra-accent-title">{barraContent.featureImage.title}</h3>
+                <p className="barra-accent-desc">{barraContent.featureImage.desc}</p>
+              </div>
             </div>
 
-            <div style={{ marginTop: '1rem' }}>
-              <h3 style={{ fontFamily: 'var(--font-headline)', color: 'var(--color-brass)', fontSize: '1.2rem' }}>
-                {barraContent.featureImage.title}
-              </h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>
-                {barraContent.featureImage.desc}
-              </p>
+            {/* Tarjeta 2: Corner Gin & Botillería */}
+            <div className="barra-accent-card">
+              <div className="barra-accent-thumb">
+                <img
+                  src={`${baseUrl}${barraContent.cornerGinImage.src}`}
+                  alt={barraContent.cornerGinImage.alt}
+                  className="barra-thumb-img"
+                  loading="lazy"
+                />
+                <span className="barra-accent-badge badge-gin">{barraContent.cornerGinImage.badge}</span>
+              </div>
+              <div className="barra-accent-body">
+                <h3 className="barra-accent-title">{barraContent.cornerGinImage.title}</h3>
+                <p className="barra-accent-desc">{barraContent.cornerGinImage.desc}</p>
+              </div>
+            </div>
+
+            {/* Tira Inferior de Sellos Taberneros */}
+            <div className="barra-badges-grid">
+              {barraContent.highlights.map((h, hIdx) => (
+                <div key={hIdx} className="barra-mini-pill">
+                  <div className="mini-pill-icon">
+                    <span className="material-symbols-outlined">{h.icon}</span>
+                  </div>
+                  <div className="mini-pill-info">
+                    <span className="mini-pill-title">{h.title}</span>
+                    <span className="mini-pill-sub">{h.text}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

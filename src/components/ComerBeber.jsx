@@ -18,7 +18,7 @@ export default function ComerBeber() {
               />
               <div style={{ padding: '0.75rem 1rem', backgroundColor: 'var(--color-cream-dark)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span className="section-tag" style={{ margin: 0 }}>{comerBeberContent.mainImage.badge}</span>
-                <span className="nav-link" style={{ color: 'var(--color-text-dark)' }}>SIEMPRE RECIÉN HECHA</span>
+                <span className="nav-link" style={{ color: 'var(--color-text-dark)' }}>TRADICIÓN & CALIDAD</span>
               </div>
             </div>
           </div>
@@ -42,6 +42,13 @@ export default function ComerBeber() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            <div style={{ marginTop: '2rem' }}>
+              <a href="#carta" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem' }}>
+                <span>CONSULTAR CARTA COMPLETA</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_downward</span>
+              </a>
             </div>
           </div>
         </div>

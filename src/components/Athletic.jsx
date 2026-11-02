@@ -29,7 +29,16 @@ export default function Athletic() {
 
   return (
     <section id="athletic" className="athletic-section">
-      {/* Background Energy & Atmosphere */}
+      {/* Fondo real del campo de San Mamés con escudo y grada */}
+      <div
+        className="athletic-stadium-bg"
+        style={{
+          backgroundImage: `url("${baseUrl}${athleticContent.stadiumImage}")`,
+        }}
+      />
+      <div className="athletic-stadium-overlay" />
+
+      {/* Atmósfera Zurigorri */}
       <div className="athletic-bg-energy" />
 
       <div className="container" style={{ position: 'relative', zIndex: 10 }}>
@@ -50,7 +59,7 @@ export default function Athletic() {
           </p>
         </div>
 
-        {/* Audiovisual Centerpiece Frame (Athletic Play inspired) */}
+        {/* Audiovisual Centerpiece Frame */}
         <div className="athletic-player-card">
           <div className="athletic-video-wrapper">
             {!prefersReducedMotion ? (
@@ -73,11 +82,11 @@ export default function Athletic() {
               />
             )}
 
-            {/* Cinematic Gradient Overlays */}
+            {/* Gradient Overlays */}
             <div className="athletic-scrim-top" />
             <div className="athletic-scrim-bottom" />
 
-            {/* Official Crest Badge - High Visibility */}
+            {/* Official Crest Badge */}
             <div className="athletic-crest-floating">
               <img
                 src={`${baseUrl}${athleticContent.crestImage}`}
@@ -86,7 +95,7 @@ export default function Athletic() {
               />
             </div>
 
-            {/* Integrated Video Play/Pause Controller */}
+            {/* Video Play/Pause Controller */}
             {!prefersReducedMotion && (
               <button
                 type="button"
@@ -104,7 +113,7 @@ export default function Athletic() {
               </button>
             )}
 
-            {/* Desktop Overlay Banner (hidden on mobile to prevent blocking composition) */}
+            {/* Desktop Overlay Banner */}
             <div className="athletic-overlay-caption">
               <div className="athletic-caption-badge">
                 SAN MAMÉS · INDAUTXU
@@ -115,7 +124,7 @@ export default function Athletic() {
             </div>
           </div>
 
-          {/* Mobile Caption Banner (displayed directly below the video on mobile) */}
+          {/* Mobile Caption Banner */}
           <div className="athletic-mobile-caption">
             <span className="athletic-caption-badge">
               SAN MAMÉS · INDAUTXU

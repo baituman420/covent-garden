@@ -48,10 +48,10 @@ export default function ElPub() {
               </div>
             </div>
 
-            {/* Special Feature: El Tren del Techo */}
+            {/* Special Feature: Tradición e Identidad */}
             <div className="special-feature">
               <span className="material-symbols-outlined" style={{ fontSize: '2rem', color: 'var(--color-oxblood)', flexShrink: 0 }}>
-                train
+                {elPubContent.specialFeature.icon || 'sports_bar'}
               </span>
               <div>
                 <h4 style={{ fontFamily: 'var(--font-headline)', fontSize: '1.1rem', fontWeight: '700' }}>
