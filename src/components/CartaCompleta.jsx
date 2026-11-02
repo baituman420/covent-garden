@@ -112,18 +112,40 @@ export default function CartaCompleta() {
     }
   };
 
-  // Gestos táctiles en el escenario de la carta
+  // Gestos táctiles en el escenario de la carta (aislado del carrusel hijo de platos)
   const handleTouchStart = (e) => {
+    // Si el toque se inicia dentro del carrusel de platos, fotos de referencia o controles interactivos, NO activar el cambio de categoría
+    if (
+      e.target.closest('.dish-carousel-wrapper') ||
+      e.target.closest('.dish-carousel-track') ||
+      e.target.closest('.slide-visual-references-strip') ||
+      e.target.closest('.view-mode-toggle') ||
+      e.target.closest('button') ||
+      e.target.closest('a')
+    ) {
+      touchStartX.current = null;
+      touchStartY.current = null;
+      return;
+    }
+
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e) => {
+    if (touchStartX.current === null || touchStartY.current === null) {
+      return;
+    }
+
     touchEndX.current = e.changedTouches[0].clientX;
     const diffX = touchEndX.current - touchStartX.current;
     const diffY = e.changedTouches[0].clientY - touchStartY.current;
 
-    if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    // Solo considerar swipe de categoría si el desplazamiento horizontal es significativo y claramente horizontal
+    if (Math.abs(diffX) > 70 && Math.abs(diffX) > Math.abs(diffY) * 1.8) {
       if (diffX > 0) {
         handlePrevCategory();
       } else {
@@ -495,7 +517,11 @@ export default function CartaCompleta() {
 
               {/* Tira Visual Compacta de Referencias Fotográficas Reales */}
               {activeCategory.visualReferences && activeCategory.visualReferences.length > 0 && (
-                <div className="slide-visual-references-strip">
+                <div
+                  className="slide-visual-references-strip"
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchEnd={(e) => e.stopPropagation()}
+                >
                   <div className="visual-strip-compact-header">
                     <span className="visual-strip-label">
                       <span className="material-symbols-outlined">photo_camera</span>
@@ -588,7 +614,11 @@ export default function CartaCompleta() {
 
               {/* CONTENEDOR DE PLATOS: CARRUSEL HORIZONTAL O CUADRÍCULA */}
               {viewMode === 'carousel' ? (
-                <div className="dish-carousel-wrapper">
+                <div
+                  className="dish-carousel-wrapper"
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchEnd={(e) => e.stopPropagation()}
+                >
                   <div
                     ref={dishesTrackRef}
                     className="dish-carousel-track"
