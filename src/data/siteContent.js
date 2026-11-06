@@ -12,6 +12,14 @@ export const site = {
   metroStation: "Metro Indautxu (Salida Doctor Areilza) a 3 minutos a pie.",
   phone: "944 667 549",
   phoneFormatted: "+34 944 667 549",
+  email: "admin@coventgardenbilbao.es",
+  schedule: [
+    { days: "Lunes a Miércoles", hours: "08:30 – 23:30" },
+    { days: "Jueves", hours: "08:30 – 01:00" },
+    { days: "Viernes", hours: "08:30 – 03:00" },
+    { days: "Sábado", hours: "10:00 – 03:00" },
+    { days: "Domingo", hours: "11:00 – 23:30" },
+  ],
   logo: "images/c-de-covent-logo.jpg",
 };
 

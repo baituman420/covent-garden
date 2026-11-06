@@ -1,8 +1,11 @@
 import React from 'react';
 import { comerBeberContent } from '../data/siteContent.js';
+import { useDynamicMedia, resolveSingleImage } from '../data/mediaBridge.js';
 
 export default function ComerBeber() {
   const baseUrl = import.meta.env.BASE_URL;
+  const media = useDynamicMedia();
+  const rabasImgSrc = resolveSingleImage(media, 'especialidad_rabas', comerBeberContent.mainImage.src);
 
   return (
     <section id="comer-beber" className="section-padding bg-cream" style={{ borderTop: '1px solid rgba(29, 26, 24, 0.1)' }}>
@@ -12,7 +15,7 @@ export default function ComerBeber() {
           <div style={{ position: 'relative' }}>
             <div className="image-card" style={{ height: 'auto', minHeight: '380px' }}>
               <img
-                src={`${baseUrl}${comerBeberContent.mainImage.src}`}
+                src={`${baseUrl}${rabasImgSrc}`}
                 alt={comerBeberContent.mainImage.alt}
                 style={{ height: '420px', objectFit: 'cover' }}
               />

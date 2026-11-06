@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { navidadContent, site } from '../data/siteContent.js';
+import { useDynamicMedia, resolveSingleImage } from '../data/mediaBridge.js';
 
 export default function NavidadModal() {
   const baseUrl = import.meta.env.BASE_URL;
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('katxopo'); // 'katxopo' | 'navidad' | 'poster'
   const [isEligible, setIsEligible] = useState(true);
+  const media = useDynamicMedia();
+  const posterImgSrc = resolveSingleImage(media, 'cartel_navidad', navidadContent.posterImage);
 
   useEffect(() => {
     // Verificar si estamos dentro del período navideño (activo hasta enero)
@@ -131,31 +134,43 @@ export default function NavidadModal() {
 
             {/* Pestañas de Selección de Menús */}
             <div className="navidad-tabs-wrapper">
-              <div className="navidad-tabs-bar">
+              <div className="navidad-tabs-bar" role="tablist" aria-label="Selección de menús especiales">
                 <button
                   type="button"
+                  role="tab"
+                  id="tab-katxopo"
+                  aria-selected={activeTab === 'katxopo'}
+                  aria-controls="panel-katxopo"
                   className={`navidad-tab-btn ${activeTab === 'katxopo' ? 'active' : ''}`}
                   onClick={() => setActiveTab('katxopo')}
                 >
-                  <span className="tab-pill-icon">🥩</span>
+                  <span className="tab-pill-icon" aria-hidden="true">🥩</span>
                   <span className="tab-label-full">Menú Katxopo (22€ / 24€)</span>
                   <span className="tab-label-mobile">Katxopo (22€/24€)</span>
                 </button>
                 <button
                   type="button"
+                  role="tab"
+                  id="tab-navidad"
+                  aria-selected={activeTab === 'navidad'}
+                  aria-controls="panel-navidad"
                   className={`navidad-tab-btn ${activeTab === 'navidad' ? 'active' : ''}`}
                   onClick={() => setActiveTab('navidad')}
                 >
-                  <span className="tab-pill-icon">🍷</span>
+                  <span className="tab-pill-icon" aria-hidden="true">🍷</span>
                   <span className="tab-label-full">Menú Navidad (36€)</span>
                   <span className="tab-label-mobile">Navidad (36€)</span>
                 </button>
                 <button
                   type="button"
+                  role="tab"
+                  id="tab-poster"
+                  aria-selected={activeTab === 'poster'}
+                  aria-controls="panel-poster"
                   className={`navidad-tab-btn ${activeTab === 'poster' ? 'active' : ''}`}
                   onClick={() => setActiveTab('poster')}
                 >
-                  <span className="tab-pill-icon">📜</span>
+                  <span className="tab-pill-icon" aria-hidden="true">📜</span>
                   <span className="tab-label-full">Cartel Original</span>
                   <span className="tab-label-mobile">Cartel</span>
                 </button>
@@ -170,7 +185,13 @@ export default function NavidadModal() {
 
               <div className="navidad-tab-content">
                 {activeTab === 'katxopo' && (
-                  <div className="navidad-card-detail">
+                  <div
+                    role="tabpanel"
+                    id="panel-katxopo"
+                    aria-labelledby="tab-katxopo"
+                    tabIndex="0"
+                    className="navidad-card-detail"
+                  >
                     <div className="navidad-card-top">
                       <div>
                         <span className="navidad-item-badge">MÍNIMO 2 PERSONAS</span>
@@ -215,7 +236,13 @@ export default function NavidadModal() {
                 )}
 
                 {activeTab === 'navidad' && (
-                  <div className="navidad-card-detail">
+                  <div
+                    role="tabpanel"
+                    id="panel-navidad"
+                    aria-labelledby="tab-navidad"
+                    tabIndex="0"
+                    className="navidad-card-detail"
+                  >
                     <div className="navidad-card-top">
                       <div>
                         <span className="navidad-item-badge">MENÚ COMPLETO</span>
@@ -276,9 +303,15 @@ export default function NavidadModal() {
                 )}
 
                 {activeTab === 'poster' && (
-                  <div className="navidad-poster-preview">
+                  <div
+                    role="tabpanel"
+                    id="panel-poster"
+                    aria-labelledby="tab-poster"
+                    tabIndex="0"
+                    className="navidad-poster-preview"
+                  >
                     <img
-                      src={`${baseUrl}${navidadContent.posterImage}`}
+                      src={`${baseUrl}${posterImgSrc}`}
                       alt="Cartel oficial de menús de Navidad y Katxopo en Covent Garden"
                       className="navidad-poster-img"
                     />

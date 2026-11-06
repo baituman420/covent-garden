@@ -1,0 +1,14 @@
+# ==============================================================================
+# Covent Garden Bilbao · Dominio Principal (https://coventgardenbilbao.es)
+# ==============================================================================
+
+User-agent: *
+Allow: /
+
+# Exclusión de rutas administrativas, manifiestos internos y endpoints
+Disallow: /fotos/
+Disallow: /data/
+Disallow: /api/
+
+# Mapa del sitio
+Sitemap: https://coventgardenbilbao.es/sitemap.xml

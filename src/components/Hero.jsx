@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { heroContent } from '../data/siteContent.js';
+import { useDynamicMedia, resolveSingleImage } from '../data/mediaBridge.js';
 
 export default function Hero() {
   const baseUrl = import.meta.env.BASE_URL;
   const heroRef = useRef(null);
+  const media = useDynamicMedia();
+  const facadeImage = resolveSingleImage(media, 'hero_fachada', heroContent.backgroundImage);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -80,7 +83,7 @@ export default function Hero() {
       {/* Main Facade Wrap with Real Sign & Red Exterior (fachada-hero.png) */}
       <div className="hero-facade-wrap">
         <img
-          src={`${baseUrl}${heroContent.backgroundImage}`}
+          src={`${baseUrl}${facadeImage}`}
           alt="Fachada real de Covent Garden Bilbao"
           className="hero-facade-img"
         />

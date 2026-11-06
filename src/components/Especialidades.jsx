@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { especialidadesContent } from '../data/siteContent.js';
+import { useDynamicMedia, resolveSingleImage } from '../data/mediaBridge.js';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -11,6 +12,7 @@ export default function Especialidades() {
   const sectionRef = useRef(null);
   const gridRef = useRef(null);
   const baseUrl = import.meta.env.BASE_URL;
+  const media = useDynamicMedia();
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -95,6 +97,8 @@ export default function Especialidades() {
         <div ref={gridRef} className="especialidades-grid">
           {especialidadesContent.items.map((item, index) => {
             const isFeatured = index === 0 || index === 3;
+            const imgKey = 'especialidad_' + item.id.replace(/-/g, '_');
+            const imgSrc = resolveSingleImage(media, imgKey, item.image);
             return (
               <article
                 key={item.id}
@@ -103,7 +107,7 @@ export default function Especialidades() {
                 {/* Image Container with Editorial Frame */}
                 <div className="especialidad-img-wrap">
                   <img
-                    src={`${baseUrl}${item.image}`}
+                    src={`${baseUrl}${imgSrc}`}
                     alt={item.title}
                     loading="lazy"
                     className="especialidad-img"

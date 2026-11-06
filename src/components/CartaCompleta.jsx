@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cartaContent, cartelesContent, site } from '../data/siteContent.js';
+import { useDynamicMedia, resolveCartaCategories, resolveSingleImage } from '../data/mediaBridge.js';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -31,7 +32,10 @@ const categorySummaries = {
 
 export default function CartaCompleta() {
   const baseUrl = import.meta.env.BASE_URL;
-  const categories = cartaContent.categories;
+  const media = useDynamicMedia();
+  const categories = resolveCartaCategories(media, cartaContent.categories);
+  const cartelRabasSrc = resolveSingleImage(media, 'cartel_rabas', cartelesContent.rabasMarianitos.src);
+  const cartelMarianitosSrc = resolveSingleImage(media, 'cartel_marianitos', cartelesContent.marianitosPreparados.src);
 
   // Estado del carrusel de categorías (0 a categories.length - 1)
   const [activeCatIndex, setActiveCatIndex] = useState(0);
@@ -376,7 +380,7 @@ export default function CartaCompleta() {
               <div className="cartel-stud" />
               <div className="cartel-frame">
                 <img
-                  src={`${baseUrl}${cartelesContent.rabasMarianitos.src}`}
+                  src={`${baseUrl}${cartelRabasSrc}`}
                   alt={cartelesContent.rabasMarianitos.alt}
                   className="cartel-img"
                   loading="lazy"
@@ -393,7 +397,7 @@ export default function CartaCompleta() {
               <div className="cartel-stud" />
               <div className="cartel-frame">
                 <img
-                  src={`${baseUrl}${cartelesContent.marianitosPreparados.src}`}
+                  src={`${baseUrl}${cartelMarianitosSrc}`}
                   alt={cartelesContent.marianitosPreparados.alt}
                   className="cartel-img"
                   loading="lazy"

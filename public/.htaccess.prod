@@ -1,0 +1,40 @@
+# ==============================================================================
+# Covent Garden Bilbao · Configuración Apache para DonDominio (PRODUCCIÓN)
+# ==============================================================================
+
+# 1. Protección global contra descarga de archivos sensibles y de control de versiones
+<FilesMatch "(^\..*|\.git.*|\.env.*|\.sql|\.bak|\.log|\.ini|\.sh)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Bloqueo estricto por rewrite de directorios internos y copias de seguridad
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule (^|/)\.backups(/.*)?$ - [F,L]
+    RewriteRule (^|/)\.git(/.*)?$ - [F,L]
+</IfModule>
+
+# 2. Cabeceras de seguridad HTTP (Producción: indexación pública permitida)
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 3. Compresión Gzip / Deflate para optimización de carga
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# 4. Tipos MIME modernos
+<IfModule mod_mime.c>
+    AddType image/webp .webp
+    AddType application/json .json
+    AddType video/mp4 .mp4
+</IfModule>

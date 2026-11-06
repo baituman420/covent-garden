@@ -19,10 +19,11 @@ export default function Header({ isSubpage = false }) {
       <div className="container header-container">
         
         {/* Brand Logo & Name */}
-        <a href={baseUrl} className="brand-link">
+        <a href={baseUrl} className="brand-link" aria-label="Covent Garden Bilbao - Volver al inicio">
           <img
             src={`${baseUrl}${site.logo}`}
-            alt={site.name}
+            alt=""
+            aria-hidden="true"
             className="brand-logo"
           />
           <span className="brand-name">
@@ -32,7 +33,7 @@ export default function Header({ isSubpage = false }) {
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="desktop-nav">
+        <nav className="desktop-nav" aria-label="Navegación principal">
           {navigation.map((item, idx) => (
             <a
               key={idx}
@@ -61,9 +62,11 @@ export default function Header({ isSubpage = false }) {
             type="button"
             className="mobile-toggle"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menú principal"
+            aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú principal'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav"
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '28px' }} aria-hidden="true">
               {mobileMenuOpen ? 'close' : 'menu'}
             </span>
           </button>
@@ -72,7 +75,7 @@ export default function Header({ isSubpage = false }) {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <nav className="mobile-nav">
+        <nav id="mobile-nav" className="mobile-nav" aria-label="Navegación móvil">
           {navigation.map((item, idx) => (
             <a
               key={idx}

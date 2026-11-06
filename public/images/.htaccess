@@ -1,0 +1,31 @@
+# ==============================================================================
+# Covent Garden Bilbao · Hardening para carpeta de imágenes (DonDominio)
+# ==============================================================================
+
+# 1. Bloquear ejecución y descarga de cualquier script PHP, CGI o ejecutable
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|php8|phps|cgi|pl|py|sh|bash)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 2. Bloquear acceso a archivos y carpetas ocultas (como .backups o .htaccess)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 3. Bloqueo adicional por mod_rewrite para subdirectorio de copias de seguridad
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^\.backups(/.*)?$ - [F,L]
+</IfModule>

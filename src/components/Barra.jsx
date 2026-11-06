@@ -1,8 +1,13 @@
 import React from 'react';
 import { barraContent } from '../data/siteContent.js';
+import { useDynamicMedia, resolveSingleImage } from '../data/mediaBridge.js';
 
 export default function Barra() {
   const baseUrl = import.meta.env.BASE_URL;
+  const media = useDynamicMedia();
+  const mainImgSrc = resolveSingleImage(media, 'pub_barra_noche', barraContent.mainImage.src);
+  const featureImgSrc = resolveSingleImage(media, 'barra_tiradores', barraContent.featureImage.src);
+  const ginImgSrc = resolveSingleImage(media, 'barra_gin_corner', barraContent.cornerGinImage.src);
 
   return (
     <section id="barra" className="barra-section section-padding bg-dark">
@@ -32,7 +37,7 @@ export default function Barra() {
           <div className="barra-main-card">
             <div className="barra-main-img-wrap">
               <img
-                src={`${baseUrl}${barraContent.mainImage.src}`}
+                src={`${baseUrl}${mainImgSrc}`}
                 alt={barraContent.mainImage.alt}
                 className="barra-main-img"
                 loading="lazy"
@@ -55,7 +60,7 @@ export default function Barra() {
             <div className="barra-accent-card">
               <div className="barra-accent-thumb">
                 <img
-                  src={`${baseUrl}${barraContent.featureImage.src}`}
+                  src={`${baseUrl}${featureImgSrc}`}
                   alt={barraContent.featureImage.alt}
                   className="barra-thumb-img"
                   loading="lazy"
@@ -72,7 +77,7 @@ export default function Barra() {
             <div className="barra-accent-card">
               <div className="barra-accent-thumb">
                 <img
-                  src={`${baseUrl}${barraContent.cornerGinImage.src}`}
+                  src={`${baseUrl}${ginImgSrc}`}
                   alt={barraContent.cornerGinImage.alt}
                   className="barra-thumb-img"
                   loading="lazy"

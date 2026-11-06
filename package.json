@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:dondominio": "VITE_BASE=/ vite build",
     "preview": "vite preview",
     "remotion:preview": "remotion studio remotion/index.js",
     "remotion:render": "remotion render remotion/index.js AthleticPromo public/video/athletic-promo.mp4",

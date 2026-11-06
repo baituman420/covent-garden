@@ -3,5 +3,29 @@ dist
 .DS_Store
 *.local
 *.zip
+*.tar.gz
 *.log
+.env
+.env.*
+!.env.example
+
+# Certificados y claves
+*.pem
+*.key
+*.crt
+*.cert
+
+# Configuraciones locales privadas y tokens (nunca subir credenciales reales)
+public/api/config.php
+dist/api/config.php
+public/fotos/config.local.php
+dist/fotos/config.local.php
+public/data/.rate_limit.json
+dist/data/.rate_limit.json
+
+# Copias de seguridad de imágenes (conservar solo el .htaccess protector)
+public/images/.backups/*
+!public/images/.backups/.htaccess
+dist/images/.backups/*
+!dist/images/.backups/.htaccess
 

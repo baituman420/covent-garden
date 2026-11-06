@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { galleryContent } from '../data/siteContent.js';
+import { useDynamicMedia, resolveGaleria } from '../data/mediaBridge.js';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -11,6 +12,8 @@ export default function Galeria() {
   const sectionRef = useRef(null);
   const stageRef = useRef(null);
   const baseUrl = import.meta.env.BASE_URL;
+  const media = useDynamicMedia();
+  const dynamicContent = resolveGaleria(media, galleryContent);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -223,19 +226,19 @@ export default function Galeria() {
           <div className="galeria-item item-main">
             <div className="galeria-img-wrap">
               <img
-                src={`${baseUrl}${galleryContent.mainItem.src}`}
-                alt={galleryContent.mainItem.alt}
+                src={`${baseUrl}${dynamicContent.mainItem.src}`}
+                alt={dynamicContent.mainItem.alt}
                 className="galeria-img"
               />
               <div className="galeria-item-overlay">
-                <span className="galeria-item-tag">{galleryContent.mainItem.tag}</span>
-                <h3 className="galeria-item-title">{galleryContent.mainItem.title}</h3>
+                <span className="galeria-item-tag">{dynamicContent.mainItem.tag}</span>
+                <h3 className="galeria-item-title">{dynamicContent.mainItem.title}</h3>
               </div>
             </div>
           </div>
 
           {/* Emerging Items 2 to 5 */}
-          {galleryContent.items.map((item, idx) => (
+          {dynamicContent.items.map((item, idx) => (
             <div key={idx} className={`galeria-item item-sub item-${idx + 2}`}>
               <div className="galeria-img-wrap">
                 <img
@@ -258,20 +261,20 @@ export default function Galeria() {
           <div className="galeria-item item-main-mobile">
             <div className="galeria-img-wrap">
               <img
-                src={`${baseUrl}${galleryContent.mainItem.src}`}
-                alt={galleryContent.mainItem.alt}
+                src={`${baseUrl}${dynamicContent.mainItem.src}`}
+                alt={dynamicContent.mainItem.alt}
                 className="galeria-img"
               />
               <div className="galeria-item-overlay">
-                <span className="galeria-item-tag">{galleryContent.mainItem.tag}</span>
-                <h3 className="galeria-item-title">{galleryContent.mainItem.title}</h3>
+                <span className="galeria-item-tag">{dynamicContent.mainItem.tag}</span>
+                <h3 className="galeria-item-title">{dynamicContent.mainItem.title}</h3>
               </div>
             </div>
           </div>
 
           {/* Sub Items 2-Column Grid */}
           <div className="galeria-mobile-grid">
-            {galleryContent.items.map((item, idx) => (
+            {dynamicContent.items.map((item, idx) => (
               <div key={idx} className={`galeria-item item-sub-mobile item-sub-mobile-${idx + 1}`}>
                 <div className="galeria-img-wrap">
                   <img

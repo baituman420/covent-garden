@@ -1,0 +1,12 @@
+# Acceso estrictamente bloqueado para copias de seguridad de imágenes
+# Solo los scripts PHP internos del servidor pueden acceder a esta carpeta
+
+<FilesMatch ".*">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

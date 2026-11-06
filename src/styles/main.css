@@ -41,6 +41,55 @@ button {
   background: none;
 }
 
+/* Accessible Keyboard Navigation & Focus Indicators (WCAG 2.4.7 & 2.4.13) */
+:focus-visible {
+  outline: 2px solid var(--color-brass) !important;
+  outline-offset: 3px !important;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Accessibility Skip Link (WCAG 2.4.1) */
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 1rem;
+  z-index: 9999;
+  background-color: var(--color-oxblood);
+  color: var(--color-cream);
+  padding: 0.75rem 1.25rem;
+  border: 2px solid var(--color-brass);
+  border-radius: var(--radius-md);
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: top 0.2s ease-in-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85);
+}
+
+.skip-link:focus-visible,
+.skip-link:focus {
+  top: 1rem !important;
+  outline: 2px solid var(--color-brass) !important;
+  outline-offset: 3px !important;
+}
+
+/* Screen Reader Only Utility (WCAG 1.3.1) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* Layout Utilities */
 .container {
   width: 100%;

@@ -226,6 +226,44 @@ export default function InstagramLocation() {
                   </span>
                   <span>{site.metroStation}</span>
                 </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', fontSize: '0.875rem' }}>
+                  <span className="material-symbols-outlined" style={{ color: 'var(--color-oxblood)', fontSize: '18px' }}>
+                    phone
+                  </span>
+                  <a href={`tel:${site.phone.replace(/\s+/g, '')}`} style={{ color: 'var(--color-text-dark)', textDecoration: 'none', fontWeight: 600 }}>
+                    {site.phoneFormatted}
+                  </a>
+                  <span style={{ color: 'var(--color-text-dark-muted)' }}>·</span>
+                  <span className="material-symbols-outlined" style={{ color: 'var(--color-oxblood)', fontSize: '18px' }}>
+                    mail
+                  </span>
+                  <a href={`mailto:${site.email}`} style={{ color: 'var(--color-text-dark)', textDecoration: 'none', fontWeight: 500 }}>
+                    {site.email}
+                  </a>
+                </div>
+
+                {/* Horario Semanal */}
+                {site.schedule && (
+                  <div style={{ marginTop: '0.5rem', paddingTop: '0.75rem', borderTop: '1px dashed rgba(29, 26, 24, 0.15)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                      <span className="material-symbols-outlined" style={{ color: 'var(--color-brass-dark)', fontSize: '18px' }}>
+                        schedule
+                      </span>
+                      <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--color-text-dark-muted)', fontWeight: 700 }}>
+                        Horario de Apertura
+                      </span>
+                    </div>
+                    <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.25rem 1rem', fontSize: '0.8rem', lineHeight: '1.45' }}>
+                      {site.schedule.map((item, idx) => (
+                        <React.Fragment key={idx}>
+                          <dt style={{ color: 'var(--color-text-dark-muted)', fontWeight: 500 }}>{item.days}</dt>
+                          <dd style={{ margin: 0, textAlign: 'right', fontWeight: 600, color: 'var(--color-text-dark)' }}>{item.hours}</dd>
+                        </React.Fragment>
+                      ))}
+                    </dl>
+                  </div>
+                )}
               </div>
             </div>
 

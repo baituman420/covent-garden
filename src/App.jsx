@@ -19,7 +19,7 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <main style={{ width: '100%', paddingTop: '5rem', flex: 1 }}>
+      <main id="main-content" tabIndex="-1" style={{ width: '100%', paddingTop: '5rem', flex: 1, outline: 'none' }}>
         <Hero />
         <ElPub />
         <CartaCompleta />

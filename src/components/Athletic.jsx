@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { athleticContent } from '../data/siteContent.js';
+import { useDynamicMedia, resolveSingleImage } from '../data/mediaBridge.js';
 
 export default function Athletic() {
   const baseUrl = import.meta.env.BASE_URL;
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const media = useDynamicMedia();
+  const stadiumImgSrc = resolveSingleImage(media, 'athletic_campo', athleticContent.stadiumImage);
+  const posterImgSrc = resolveSingleImage(media, 'athletic_poster', athleticContent.posterImage);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -33,7 +37,7 @@ export default function Athletic() {
       <div
         className="athletic-stadium-bg"
         style={{
-          backgroundImage: `url("${baseUrl}${athleticContent.stadiumImage}")`,
+          backgroundImage: `url("${baseUrl}${stadiumImgSrc}")`,
         }}
       />
       <div className="athletic-stadium-overlay" />
@@ -66,7 +70,7 @@ export default function Athletic() {
               <video
                 ref={videoRef}
                 src={`${baseUrl}${athleticContent.videoUrl}`}
-                poster={`${baseUrl}${athleticContent.posterImage}`}
+                poster={`${baseUrl}${posterImgSrc}`}
                 autoPlay
                 muted
                 loop
@@ -76,7 +80,7 @@ export default function Athletic() {
               />
             ) : (
               <img
-                src={`${baseUrl}${athleticContent.posterImage}`}
+                src={`${baseUrl}${posterImgSrc}`}
                 alt="Aquí se vive el Athletic"
                 className="athletic-video-element"
               />

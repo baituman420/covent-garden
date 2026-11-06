@@ -91,7 +91,7 @@ export default function GruposPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header isSubpage={true} />
 
-      <main style={{ width: '100%', paddingTop: '5rem', flex: 1 }}>
+      <main id="main-content" tabIndex="-1" style={{ width: '100%', paddingTop: '5rem', flex: 1, outline: 'none' }}>
         {/* Page Hero */}
         <section className="section-padding bg-dark-canvas" style={{ position: 'relative', overflow: 'hidden' }}>
           <div
@@ -138,6 +138,7 @@ export default function GruposPage() {
             </p>
 
             {/* Highlights Grid */}
+            <h2 className="sr-only">Servicios y espacios disponibles para grupos</h2>
             <div
               style={{
                 display: 'grid',
@@ -238,6 +239,8 @@ export default function GruposPage() {
               {/* Status Alert */}
               {status === 'success' && (
                 <div
+                  role="status"
+                  aria-live="polite"
                   style={{
                     backgroundColor: 'rgba(34, 197, 94, 0.15)',
                     border: '1px solid rgba(34, 197, 94, 0.4)',
@@ -250,7 +253,7 @@ export default function GruposPage() {
                     gap: '0.75rem',
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ color: '#4ade80' }}>
+                  <span className="material-symbols-outlined" style={{ color: '#4ade80' }} aria-hidden="true">
                     check_circle
                   </span>
                   <div>
@@ -262,6 +265,8 @@ export default function GruposPage() {
 
               {status === 'error' && (
                 <div
+                  role="alert"
+                  aria-live="assertive"
                   style={{
                     backgroundColor: 'rgba(239, 68, 68, 0.15)',
                     border: '1px solid rgba(239, 68, 68, 0.4)',
@@ -274,7 +279,7 @@ export default function GruposPage() {
                     gap: '0.75rem',
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ color: '#f87171' }}>
+                  <span className="material-symbols-outlined" style={{ color: '#f87171' }} aria-hidden="true">
                     error
                   </span>
                   <div>
@@ -330,6 +335,7 @@ export default function GruposPage() {
                       id="nombre"
                       name="nombre"
                       required
+                      aria-required="true"
                       value={formData.nombre}
                       onChange={handleChange}
                       placeholder="Ej: Aitor Mendia"
@@ -359,6 +365,7 @@ export default function GruposPage() {
                       id="email"
                       name="email"
                       required
+                      aria-required="true"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="nombre@ejemplo.com"
@@ -496,25 +503,82 @@ export default function GruposPage() {
                     border: '1px solid rgba(139, 30, 36, 0.6)',
                     borderRadius: 'var(--radius-md)',
                     padding: '1rem 1.25rem',
-                    marginBottom: '1.5rem',
+                    marginBottom: '1.25rem',
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '0.75rem',
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ color: 'var(--color-brass)' }}>
+                  <span className="material-symbols-outlined" style={{ color: 'var(--color-brass)' }} aria-hidden="true">
                     info
                   </span>
                   <div style={{ fontSize: '0.85rem', color: 'var(--color-cream-warm)', lineHeight: 1.5 }}>
-                    <strong>Aviso importante:</strong> El envío de esta solicitud <strong>no supone la confirmación de una reserva</strong>.
+                    <strong>Aviso importante:</strong> El envío de esta solicitud <strong>no supone la confirmación de una reserva en firme</strong>.
                     Josu recibirá la información y responderá personalmente por correo o teléfono para confirmar disponibilidad y condiciones.
                   </div>
                 </div>
 
-                {/* Privacy info */}
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
-                  Información básica de protección de datos: Covent Garden Bilbao tratará tus datos exclusivamente para atender tu consulta sobre grupos y reservados. No se cederán a terceros ni se emplearán con fines publicitarios no solicitados.
-                </p>
+                {/* Primera Capa Informativa de Protección de Datos (RGPD · Art. 13 / LOPDGDD / AEPD) */}
+                <div
+                  style={{
+                    backgroundColor: 'rgba(34, 31, 29, 0.65)',
+                    border: '1px solid rgba(247, 188, 96, 0.25)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '1rem 1.25rem',
+                    marginBottom: '1.5rem',
+                    fontSize: '0.8rem',
+                    lineHeight: 1.6,
+                    color: 'var(--color-text-muted)',
+                  }}
+                >
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--color-brass)', marginBottom: '0.5rem', fontWeight: 700 }}>
+                    Información Básica sobre Protección de Datos
+                  </div>
+                  <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '0.35rem 0.75rem', fontSize: '0.8rem' }}>
+                    <dt style={{ fontWeight: 600, color: 'var(--color-cream)' }}>Responsable:</dt>
+                    <dd style={{ margin: 0 }}>Bilbocover, S.L. (Covent Garden Bilbao) · NIF: B95501664 · Calle Doctor Areilza, 28, Bilbao.</dd>
+
+                    <dt style={{ fontWeight: 600, color: 'var(--color-cream)' }}>Finalidad:</dt>
+                    <dd style={{ margin: 0 }}>Atender y gestionar solicitudes de información y reservas de grupos. No se emplean datos para publicidad ni elaboración de perfiles.</dd>
+
+                    <dt style={{ fontWeight: 600, color: 'var(--color-cream)' }}>Legitimación:</dt>
+                    <dd style={{ margin: 0 }}>Aplicación de medidas precontractuales a petición del interesado (art. 6.1.b RGPD) e interés legítimo (art. 6.1.f RGPD).</dd>
+
+                    <dt style={{ fontWeight: 600, color: 'var(--color-cream)' }}>Conservación:</dt>
+                    <dd style={{ margin: 0 }}>12 meses en buzón de correo oficial, salvo obligación legal o necesidad justificada de conservación adicional.</dd>
+
+                    <dt style={{ fontWeight: 600, color: 'var(--color-cream)' }}>Destinatarios:</dt>
+                    <dd style={{ margin: 0 }}>No se comunicarán datos a terceros salvo imperativo u obligación legal.</dd>
+
+                    <dt style={{ fontWeight: 600, color: 'var(--color-cream)' }}>Derechos:</dt>
+                    <dd style={{ margin: 0 }}>Acceso, rectificación, supresión y demás derechos en <a href="mailto:admin@coventgardenbilbao.es" style={{ color: 'var(--color-brass)', textDecoration: 'underline' }}>admin@coventgardenbilbao.es</a> o ante la AEPD.</dd>
+
+                    <dt style={{ fontWeight: 600, color: 'var(--color-cream)' }}>Información adicional:</dt>
+                    <dd style={{ margin: 0 }}>
+                      Puedes consultar la información completa y detallada en nuestra{' '}
+                      <button
+                        type="button"
+                        onClick={() => window.dispatchEvent(new CustomEvent('open-legal-modal', { detail: { doc: 'politicaPrivacidad' } }))}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          padding: 0,
+                          color: 'var(--color-brass)',
+                          textDecoration: 'underline',
+                          textUnderlineOffset: '2px',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit',
+                          fontSize: 'inherit',
+                        }}
+                      >
+                        Política de Privacidad
+                      </button>.
+                    </dd>
+                  </dl>
+                  <p style={{ marginTop: '0.75rem', marginBottom: 0, fontSize: '0.75rem', color: 'var(--color-text-muted)', borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '0.5rem' }}>
+                    Al enviar esta solicitud, confirmas haber leído las condiciones de tratamiento de datos aplicables a tu consulta.
+                  </p>
+                </div>
 
                 {/* Submit button */}
                 <button

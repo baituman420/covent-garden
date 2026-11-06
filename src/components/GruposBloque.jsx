@@ -1,8 +1,13 @@
 import React from 'react';
 import { gruposContent, navidadContent } from '../data/siteContent.js';
+import { useDynamicMedia, resolveSingleImage } from '../data/mediaBridge.js';
 
 export default function GruposBloque() {
   const baseUrl = import.meta.env.BASE_URL;
+  const media = useDynamicMedia();
+  const bgImgSrc = resolveSingleImage(media, 'grupos_mesa_robla', gruposContent.image);
+  const secImgSrc = resolveSingleImage(media, 'grupos_mesa_tizer', gruposContent.secondaryImage);
+  const navPosterSrc = resolveSingleImage(media, 'cartel_navidad', navidadContent.posterImage);
 
   return (
     <section id="grupos" className="section-padding bg-dark-card" style={{ position: 'relative', overflow: 'hidden' }}>
@@ -11,7 +16,7 @@ export default function GruposBloque() {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `url("${baseUrl}${gruposContent.image}")`,
+          backgroundImage: `url("${baseUrl}${bgImgSrc}")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.16,
@@ -159,7 +164,7 @@ export default function GruposBloque() {
               }}
             >
               <img
-                src={`${baseUrl}${gruposContent.secondaryImage}`}
+                src={`${baseUrl}${secImgSrc}`}
                 alt="Mesa reservada en Covent Garden"
                 style={{
                   width: '100%',
@@ -225,7 +230,7 @@ export default function GruposBloque() {
               }}
             >
               <img
-                src={`${baseUrl}${navidadContent.posterImage}`}
+                src={`${baseUrl}${navPosterSrc}`}
                 alt="Cartel Menús Navidad y Katxopo"
                 style={{ width: '56px', height: '76px', objectFit: 'cover', borderRadius: '4px', border: '1px solid rgba(247, 188, 96, 0.4)' }}
               />

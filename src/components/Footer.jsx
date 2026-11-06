@@ -1,5 +1,6 @@
 import React from 'react';
 import { site, navigation } from '../data/siteContent.js';
+import LegalModal from './LegalModal.jsx';
 
 export default function Footer() {
   return (
@@ -64,12 +65,56 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Legal Navigation Links */}
+        <nav aria-label="Enlaces legales y de privacidad" style={{ borderTop: '1px solid rgba(247, 188, 96, 0.15)', paddingTop: '1.25rem', marginTop: '1.5rem' }}>
+          <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '0.75rem 1.25rem', justifyContent: 'center', alignItems: 'center', fontSize: '0.8rem', padding: 0, margin: 0 }}>
+            <li>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-legal-modal', { detail: { doc: 'avisoLegal' } }))}
+                style={{ color: 'var(--color-text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem 0', transition: 'color 0.2s', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+                onMouseOver={(e) => (e.currentTarget.style.color = 'var(--color-brass)')}
+                onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
+              >
+                Aviso Legal
+              </button>
+            </li>
+            <li aria-hidden="true" style={{ color: 'rgba(247, 188, 96, 0.4)' }}>·</li>
+            <li>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-legal-modal', { detail: { doc: 'politicaPrivacidad' } }))}
+                style={{ color: 'var(--color-text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem 0', transition: 'color 0.2s', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+                onMouseOver={(e) => (e.currentTarget.style.color = 'var(--color-brass)')}
+                onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
+              >
+                Política de Privacidad
+              </button>
+            </li>
+            <li aria-hidden="true" style={{ color: 'rgba(247, 188, 96, 0.4)' }}>·</li>
+            <li>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-legal-modal', { detail: { doc: 'politicaCookies' } }))}
+                style={{ color: 'var(--color-text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem 0', transition: 'color 0.2s', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+                onMouseOver={(e) => (e.currentTarget.style.color = 'var(--color-brass)')}
+                onMouseOut={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
+              >
+                Información sobre Cookies
+              </button>
+            </li>
+          </ul>
+        </nav>
+
         {/* Footer Bottom */}
         <div className="footer-bottom">
-          <div>© {new Date().getFullYear()} {site.name}. Todos los derechos reservados.</div>
+          <div>© {new Date().getFullYear()} {site.name} · Bilbocover, S.L. (NIF B95501664)</div>
           <div>{site.address} · {site.neighborhood}, {site.city}</div>
         </div>
       </div>
+
+      {/* Accessible Legal Modal for Aviso Legal, Privacidad and Cookies */}
+      <LegalModal />
     </footer>
   );
 }

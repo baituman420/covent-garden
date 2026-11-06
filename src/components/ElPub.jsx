@@ -1,8 +1,12 @@
 import React from 'react';
 import { elPubContent } from '../data/siteContent.js';
+import { useDynamicMedia, resolveSingleImage } from '../data/mediaBridge.js';
 
 export default function ElPub() {
   const baseUrl = import.meta.env.BASE_URL;
+  const media = useDynamicMedia();
+  const mainImgSrc = resolveSingleImage(media, 'pub_barra_noche', elPubContent.mainImage.src);
+  const secImgSrc = resolveSingleImage(media, 'pub_ambiente_dia', elPubContent.secondaryImage.src);
 
   return (
     <section id="el-pub" className="section-padding bg-cream-warm">
@@ -21,7 +25,7 @@ export default function ElPub() {
           {/* Main Photo */}
           <div className="image-card">
             <img
-              src={`${baseUrl}${elPubContent.mainImage.src}`}
+              src={`${baseUrl}${mainImgSrc}`}
               alt={elPubContent.mainImage.alt}
             />
             <div className="card-caption">
@@ -34,7 +38,7 @@ export default function ElPub() {
           <div>
             <div className="memorabilia-card">
               <img
-                src={`${baseUrl}${elPubContent.secondaryImage.src}`}
+                src={`${baseUrl}${secImgSrc}`}
                 alt={elPubContent.secondaryImage.alt}
               />
               <div className="memorabilia-content">
