@@ -228,6 +228,9 @@ function process_and_save_image($tmpFile, $destFile, $maxDimension, $config) {
         imagesavealpha($destImg, true);
         $transparent = imagecolorallocatealpha($destImg, 255, 255, 255, 127);
         imagefilledrectangle($destImg, 0, 0, $newW, $newH, $transparent);
+    } else {
+        $bg = imagecolorallocate($destImg, 255, 255, 255);
+        imagefilledrectangle($destImg, 0, 0, $newW, $newH, $bg);
     }
 
     imagecopyresampled($destImg, $srcImg, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
@@ -289,7 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['authenticated'] = true;
                     $_SESSION['flash_msg'] = 'Contraseña configurada con éxito. Ya puedes gestionar las fotografías.';
                     $_SESSION['flash_type'] = 'success';
-                    header('Location: /fotos');
+                    header('Location: ./');
                     exit;
                 } else {
                     $flashMsg = 'No se pudo escribir el archivo de configuración en el servidor. Revisa los permisos de escritura.';
@@ -316,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (password_verify($password, $config['admin_password_hash'])) {
                     reset_ip_failed_attempts($config['path_rate_limit']);
                     $_SESSION['authenticated'] = true;
-                    header('Location: /fotos');
+                    header('Location: ./');
                     exit;
                 } else {
                     record_failed_ip_attempt($config['path_rate_limit'], $config);
@@ -346,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 if ($action === 'logout') {
                     session_destroy();
-                    header('Location: /fotos');
+                    header('Location: ./');
                     exit;
                 }
 
@@ -377,9 +380,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $media['singleImages'][$imageId]['backup'] = $backupName;
                             }
 
-                            $maxDim = (strpos($imageId, 'hero') !== false || strpos($imageId, 'campo') !== false)
+                            $maxDim = (strpos($imageId, 'hero') !== false || strpos($imageId, 'campo') !== false || strpos($imageId, 'barra_fondo') !== false)
                                 ? $config['max_dimension_hero']
-                                : $config['max_dimension_carta'];
+                                : ((strpos($imageId, 'pintxo') !== false) ? $config['max_dimension_gallery'] : $config['max_dimension_carta']);
 
                             $ok = process_and_save_image($_FILES['photo']['tmp_name'], $targetAbs, $maxDim, $config);
                             if ($ok) {
@@ -1092,7 +1095,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                 <div class="flash <?= $flashType ?>"><?= htmlspecialchars($flashMsg) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/fotos">
+            <form method="POST" action="">
                 <input type="hidden" name="action" value="setup_password">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
 
@@ -1122,7 +1125,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                 <div class="flash <?= $flashType ?>"><?= htmlspecialchars($flashMsg) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/fotos">
+            <form method="POST" action="">
                 <input type="hidden" name="action" value="login">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
 
@@ -1140,13 +1143,13 @@ if ($isAuth && !empty($media['singleImages'])) {
     <!-- PANEL PRINCIPAL AUTENTICADO -->
     <header class="top-bar">
         <div class="header-wrap">
-            <a href="/fotos" class="brand-title">
+            <a href="./" class="brand-title">
                 Covent Garden
                 <span class="brand-badge">Fotos Web</span>
             </a>
             <div class="header-actions">
-                <a href="/" target="_blank" class="btn-link">Ver Web ↗</a>
-                <form method="POST" action="/fotos" style="display:inline;">
+                <a href="../" target="_blank" class="btn-link">Ver Web ↗</a>
+                <form method="POST" action="" style="display:inline;">
                     <input type="hidden" name="action" value="logout">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
                     <button type="submit" class="btn-logout">Salir</button>
@@ -1183,7 +1186,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                     <?php foreach ($items as $item): ?>
                         <div class="photo-card">
                             <div class="photo-preview">
-                                <img src="/<?= htmlspecialchars($item['current']) ?>?v=<?= $version ?>" alt="<?= htmlspecialchars($item['label']) ?>" loading="lazy">
+                                <img src="../<?= htmlspecialchars($item['current']) ?>?v=<?= $version ?>" alt="<?= htmlspecialchars($item['label']) ?>" loading="lazy">
                             </div>
                             <div class="photo-info">
                                 <div>
@@ -1192,7 +1195,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                                 </div>
 
                                 <div class="card-actions">
-                                    <form method="POST" action="/fotos" enctype="multipart/form-data" class="replace-form">
+                                    <form method="POST" action="" enctype="multipart/form-data" class="replace-form">
                                         <input type="hidden" name="action" value="replace_single">
                                         <input type="hidden" name="image_id" value="<?= htmlspecialchars($item['id']) ?>">
                                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
@@ -1204,7 +1207,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                                     </form>
 
                                     <?php if (!empty($item['backup'])): ?>
-                                        <form method="POST" action="/fotos">
+                                        <form method="POST" action="">
                                             <input type="hidden" name="action" value="revert_single">
                                             <input type="hidden" name="image_id" value="<?= htmlspecialchars($item['id']) ?>">
                                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
@@ -1233,7 +1236,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                     <?php foreach ($media['galeria'] as $gItem): ?>
                         <div class="photo-card">
                             <div class="photo-preview">
-                                <img src="/<?= htmlspecialchars($gItem['src']) ?>?v=<?= $version ?>" alt="<?= htmlspecialchars($gItem['title']) ?>" loading="lazy">
+                                <img src="../<?= htmlspecialchars($gItem['src']) ?>?v=<?= $version ?>" alt="<?= htmlspecialchars($gItem['title']) ?>" loading="lazy">
                             </div>
                             <div class="photo-info">
                                 <div>
@@ -1242,7 +1245,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                                 </div>
 
                                 <div class="card-actions">
-                                    <form method="POST" action="/fotos" enctype="multipart/form-data">
+                                    <form method="POST" action="" enctype="multipart/form-data">
                                         <input type="hidden" name="action" value="replace_galeria">
                                         <input type="hidden" name="item_id" value="<?= htmlspecialchars($gItem['id']) ?>">
                                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
@@ -1253,7 +1256,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                                     </form>
 
                                     <?php if (!empty($gItem['backup'])): ?>
-                                        <form method="POST" action="/fotos">
+                                        <form method="POST" action="">
                                             <input type="hidden" name="action" value="revert_galeria">
                                             <input type="hidden" name="item_id" value="<?= htmlspecialchars($gItem['id']) ?>">
                                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
@@ -1264,7 +1267,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                                     <?php endif; ?>
 
                                     <?php if (!empty($gItem['canDelete'])): ?>
-                                        <form method="POST" action="/fotos">
+                                        <form method="POST" action="">
                                             <input type="hidden" name="action" value="delete_galeria">
                                             <input type="hidden" name="item_id" value="<?= htmlspecialchars($gItem['id']) ?>">
                                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
@@ -1282,7 +1285,7 @@ if ($isAuth && !empty($media['singleImages'])) {
 
             <div class="add-box">
                 <h3>➕ Añadir Nueva Fotografía a la Galería</h3>
-                <form method="POST" action="/fotos" enctype="multipart/form-data">
+                <form method="POST" action="" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="add_galeria">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
 
@@ -1333,7 +1336,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                             <?php foreach ($catRefs as $rItem): ?>
                                 <div class="photo-card">
                                     <div class="photo-preview">
-                                        <img src="/<?= htmlspecialchars($rItem['src']) ?>?v=<?= $version ?>" alt="<?= htmlspecialchars($rItem['title']) ?>" loading="lazy">
+                                        <img src="../<?= htmlspecialchars($rItem['src']) ?>?v=<?= $version ?>" alt="<?= htmlspecialchars($rItem['title']) ?>" loading="lazy">
                                     </div>
                                     <div class="photo-info">
                                         <div>
@@ -1342,7 +1345,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                                         </div>
 
                                         <div class="card-actions">
-                                            <form method="POST" action="/fotos" enctype="multipart/form-data">
+                                            <form method="POST" action="" enctype="multipart/form-data">
                                                 <input type="hidden" name="action" value="replace_carta">
                                                 <input type="hidden" name="category_id" value="<?= htmlspecialchars($catId) ?>">
                                                 <input type="hidden" name="ref_id" value="<?= htmlspecialchars($rItem['id']) ?>">
@@ -1354,7 +1357,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                                             </form>
 
                                             <?php if (!empty($rItem['backup'])): ?>
-                                                <form method="POST" action="/fotos">
+                                                <form method="POST" action="">
                                                     <input type="hidden" name="action" value="revert_carta">
                                                     <input type="hidden" name="category_id" value="<?= htmlspecialchars($catId) ?>">
                                                     <input type="hidden" name="ref_id" value="<?= htmlspecialchars($rItem['id']) ?>">
@@ -1366,7 +1369,7 @@ if ($isAuth && !empty($media['singleImages'])) {
                                             <?php endif; ?>
 
                                             <?php if (!empty($rItem['canDelete'])): ?>
-                                                <form method="POST" action="/fotos">
+                                                <form method="POST" action="">
                                                     <input type="hidden" name="action" value="delete_carta">
                                                     <input type="hidden" name="category_id" value="<?= htmlspecialchars($catId) ?>">
                                                     <input type="hidden" name="ref_id" value="<?= htmlspecialchars($rItem['id']) ?>">
@@ -1384,7 +1387,7 @@ if ($isAuth && !empty($media['singleImages'])) {
 
                         <div class="add-box" style="margin-top:14px;">
                             <h3 style="font-size:0.92rem;">➕ Añadir Foto a «<?= htmlspecialchars($displayName) ?>»</h3>
-                            <form method="POST" action="/fotos" enctype="multipart/form-data">
+                            <form method="POST" action="" enctype="multipart/form-data">
                                 <input type="hidden" name="action" value="add_carta">
                                 <input type="hidden" name="category_id" value="<?= htmlspecialchars($catId) ?>">
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
