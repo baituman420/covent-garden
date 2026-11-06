@@ -138,7 +138,7 @@ if ($isDevMode) {
 }
 
 // 5. Envío de Correo en Producción
-$recipient = $config['contact']['recipient_email'] ?? 'info@coventgardenbilbao.eus';
+$recipient = $config['contact']['recipient_email'] ?? 'admin@coventgardenbilbao.es';
 $recipientName = $config['contact']['recipient_name'] ?? 'Josu - Covent Garden';
 $subjectPrefix = $config['contact']['subject_prefix'] ?? '[Covent Garden Web] ';
 $asunto = $subjectPrefix . 'Nueva solicitud de ' . $nombre . (!empty($fecha) ? ' (' . $fecha . ')' : '');

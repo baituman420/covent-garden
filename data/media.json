@@ -1,0 +1,372 @@
+{
+    "version": 1793882570,
+    "singleImages": {
+        "hero_fachada": {
+            "id": "hero_fachada",
+            "section": "Portada / Hero",
+            "label": "Foto Fachada Principal",
+            "current": "images/fachada-hero.png",
+            "default": "images/fachada-hero.png",
+            "recommended": "Horizontal 16:9 (aprox. 1920x1080)",
+            "backup": null
+        },
+        "pub_barra_noche": {
+            "id": "pub_barra_noche",
+            "section": "El Pub",
+            "label": "Barra de Noche / Atmósfera Central",
+            "current": "images/pub/barra-noche-calida.jpg",
+            "default": "images/pub/barra-noche-calida.jpg",
+            "recommended": "Horizontal (aprox. 1200x800)",
+            "backup": null
+        },
+        "pub_ambiente_dia": {
+            "id": "pub_ambiente_dia",
+            "section": "El Pub",
+            "label": "Ambiente Diurno de Barra",
+            "current": "images/pub/ambiente-barra-dia.webp",
+            "default": "images/pub/ambiente-barra-dia.webp",
+            "recommended": "Horizontal (aprox. 1000x800)",
+            "backup": null
+        },
+        "barra_tiradores": {
+            "id": "barra_tiradores",
+            "section": "La Barra",
+            "label": "Tiradores de Cerveza de Bronce",
+            "current": "images/pub/tiradores-oro-barra.jpg",
+            "default": "images/pub/tiradores-oro-barra.jpg",
+            "recommended": "Vertical o Cuadrada (aprox. 800x1000)",
+            "backup": null
+        },
+        "barra_gin_corner": {
+            "id": "barra_gin_corner",
+            "section": "La Barra",
+            "label": "Rincón de Coctelería & Gin Club",
+            "current": "images/pub/corner-gin-bombay.webp",
+            "default": "images/pub/corner-gin-bombay.webp",
+            "recommended": "Vertical o Cuadrada (aprox. 800x1000)",
+            "backup": null
+        },
+        "especialidad_rabas": {
+            "id": "especialidad_rabas",
+            "section": "Especialidades Destacadas",
+            "label": "Rabas Crujientes al Limón",
+            "current": "images/gastronomia/rabas-crujientes.jpg",
+            "default": "images/gastronomia/rabas-crujientes.jpg",
+            "recommended": "Cuadrada (aprox. 800x800)",
+            "backup": null
+        },
+        "especialidad_smash": {
+            "id": "especialidad_smash",
+            "section": "Especialidades Destacadas",
+            "label": "Hamburguesa Smash con Panceta",
+            "current": "images/gastronomia/burger-smash-bacon.webp",
+            "default": "images/gastronomia/burger-smash-bacon.webp",
+            "recommended": "Cuadrada (aprox. 800x800)",
+            "backup": null
+        },
+        "especialidad_patatas": {
+            "id": "especialidad_patatas",
+            "section": "Especialidades Destacadas",
+            "label": "Patatas 6 Salsas en Tabla",
+            "current": "images/gastronomia/patatas-6-salsas.jpg",
+            "default": "images/gastronomia/patatas-6-salsas.jpg",
+            "recommended": "Cuadrada (aprox. 800x800)",
+            "backup": null
+        },
+        "especialidad_pizzas": {
+            "id": "especialidad_pizzas",
+            "section": "Especialidades Destacadas",
+            "label": "Pizza Mediterránea en Tabla",
+            "current": "images/gastronomia/pizza-mediterranea-tabla.webp",
+            "default": "images/gastronomia/pizza-mediterranea-tabla.webp",
+            "recommended": "Cuadrada (aprox. 800x800)",
+            "backup": null
+        },
+        "especialidad_platos": {
+            "id": "especialidad_platos",
+            "section": "Especialidades Destacadas",
+            "label": "Plato Combinado Lomo & Croquetas",
+            "current": "images/gastronomia/plato-lomo-croquetas-huevo.webp",
+            "default": "images/gastronomia/plato-lomo-croquetas-huevo.webp",
+            "recommended": "Cuadrada (aprox. 800x800)",
+            "backup": null
+        },
+        "especialidad_sandwich": {
+            "id": "especialidad_sandwich",
+            "section": "Especialidades Destacadas",
+            "label": "Sándwich Indautxu con Tortilla",
+            "current": "images/gastronomia/sandwich-indautxu-tortilla.jpg",
+            "default": "images/gastronomia/sandwich-indautxu-tortilla.jpg",
+            "recommended": "Cuadrada (aprox. 800x800)",
+            "backup": null
+        },
+        "cartel_marianitos": {
+            "id": "cartel_marianitos",
+            "section": "Carteles Tradicionales",
+            "label": "Cartel Marianito's Preparados",
+            "current": "images/posters/cartel-marianitos-preparados.jpg",
+            "default": "images/posters/cartel-marianitos-preparados.jpg",
+            "recommended": "Vertical (aprox. 800x1200)",
+            "backup": null
+        },
+        "cartel_rabas": {
+            "id": "cartel_rabas",
+            "section": "Carteles Tradicionales",
+            "label": "Cartel Tenemos Rabas y Marianitos",
+            "current": "images/posters/cartel-rabas-marianitos.jpg",
+            "default": "images/posters/cartel-rabas-marianitos.jpg",
+            "recommended": "Vertical (aprox. 800x1200)",
+            "backup": null
+        },
+        "cartel_navidad": {
+            "id": "cartel_navidad",
+            "section": "Carteles Tradicionales",
+            "label": "Cartel Menús Navidad & Katxopo",
+            "current": "images/posters/cartel-navidad-katxopo.jpg",
+            "default": "images/posters/cartel-navidad-katxopo.jpg",
+            "recommended": "Vertical (aprox. 800x1200)",
+            "backup": null
+        },
+        "athletic_campo": {
+            "id": "athletic_campo",
+            "section": "Athletic & Deporte",
+            "label": "Fondo Estadio San Mamés a pie de campo",
+            "current": "images/athletic/san-mames-campo.jpg",
+            "default": "images/athletic/san-mames-campo.jpg",
+            "recommended": "Horizontal panorámico (aprox. 1920x1080)",
+            "backup": null
+        },
+        "athletic_poster": {
+            "id": "athletic_poster",
+            "section": "Athletic & Deporte",
+            "label": "Cartel / Acción de Partido Athletic",
+            "current": "images/athletic/athletic-poster.jpg",
+            "default": "images/athletic/athletic-poster.jpg",
+            "recommended": "Vertical (aprox. 800x1200)",
+            "backup": null
+        },
+        "grupos_mesa_robla": {
+            "id": "grupos_mesa_robla",
+            "section": "Grupos y Reservados",
+            "label": "Mesa Reservada Ferrocarriles de La Robla",
+            "current": "images/pub/reservado-mesa-robla.jpg",
+            "default": "images/pub/reservado-mesa-robla.jpg",
+            "recommended": "Horizontal (aprox. 1000x800)",
+            "backup": null
+        },
+        "grupos_mesa_tizer": {
+            "id": "grupos_mesa_tizer",
+            "section": "Grupos y Reservados",
+            "label": "Mesa Reservada Cartel Tizer Vintage",
+            "current": "images/pub/reservado-mesa-tizer.jpg",
+            "default": "images/pub/reservado-mesa-tizer.jpg",
+            "recommended": "Horizontal (aprox. 1000x800)",
+            "backup": null
+        }
+    },
+    "galeria": [
+        {
+            "id": "galeria_main",
+            "isMain": true,
+            "src": "images/pub/barra-noche-calida.jpg",
+            "alt": "Barra iluminada de caoba y botellería en Covent Garden",
+            "tag": "Atmósfera Central",
+            "title": "Vigas centenarias y barra noble de noche",
+            "backup": null
+        },
+        {
+            "id": "galeria_sub_1",
+            "isMain": false,
+            "src": "images/pub/ambiente-barra-dia.webp",
+            "alt": "Punto de encuentro y vida de barra en Indautxu",
+            "tag": "El Pulso de Indautxu",
+            "title": "Encuentro diario y cuadrillas en Doctor Areilza",
+            "backup": null
+        },
+        {
+            "id": "galeria_sub_2",
+            "isMain": false,
+            "src": "images/pub/reservado-mesa-robla.jpg",
+            "alt": "Mesa reservada con reloj y placa Ferrocarriles de La Robla",
+            "tag": "Reservados con Historia",
+            "title": "Rincones íntimos para cenas y cuadrillas",
+            "backup": null
+        },
+        {
+            "id": "galeria_sub_3",
+            "isMain": false,
+            "src": "images/pub/corner-gin-bombay.webp",
+            "alt": "Rincón de coctelería con botánicos y ginebra destilada",
+            "tag": "Botillería & Trago Largo",
+            "title": "Coctelería clásica y combinados preparados",
+            "backup": null
+        },
+        {
+            "id": "galeria_sub_4",
+            "isMain": false,
+            "src": "images/pub/barril-madera-covent.jpg",
+            "alt": "Barril de madera con el escudo grabado de Covent",
+            "tag": "Identidad Covent",
+            "title": "Artesanía de madera noble y solera bilbaína",
+            "backup": null
+        }
+    ],
+    "cartaReferencias": {
+        "raciones": [
+            {
+                "id": "ref_raciones_1",
+                "title": "Rabas Crujientes al Limón",
+                "desc": "Tiras doradas y tiernas con limón recién cortado y salsa artesanal",
+                "badge": "Especialidad Vermut",
+                "src": "images/gastronomia/rabas-crujientes.jpg",
+                "backup": null
+            },
+            {
+                "id": "ref_raciones_2",
+                "title": "Patatas 6 Salsas en Tabla",
+                "desc": "Doble ración de patatas rústicas crujientes con 6 salsas caseras",
+                "badge": "Para Compartir",
+                "src": "images/gastronomia/patatas-6-salsas.jpg",
+                "backup": null
+            }
+        ],
+        "burguers": [
+            {
+                "id": "ref_burguers_1",
+                "title": "Smash Covent con Panceta",
+                "desc": "Doble carne smash churruscada, cheddar fundente, cebolla morada y salsa de la casa",
+                "badge": "Smash Moments",
+                "src": "images/gastronomia/burger-smash-bacon.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_burguers_2",
+                "title": "Smash Pollo Crujiente",
+                "desc": "Carne de pollo casero especiado, lechuga tierna, tomate y mayonesa suave",
+                "badge": "100% Casera",
+                "src": "images/gastronomia/burger-pollo-crujiente.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_burguers_3",
+                "title": "Burguer Covent Clásica",
+                "desc": "Vacuno noble a la parrilla con cebolla potxada, pimiento asado y queso",
+                "badge": "Receta Covent",
+                "src": "images/gastronomia/burger-clasica-queso.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_burguers_4",
+                "title": "Super Tocha XXL",
+                "desc": "Doble medallón de vacuno, huevo frito con puntilla y aros crujientes",
+                "badge": "Doble Vacuno",
+                "src": "images/gastronomia/burger-buey-gourmet.jpg",
+                "backup": null
+            }
+        ],
+        "pizzas": [
+            {
+                "id": "ref_pizzas_1",
+                "title": "Pizza Mediterránea en Tabla",
+                "desc": "Mozzarella fundente, verduras frescas salteadas de la huerta y aceitunas negras",
+                "badge": "Tabla Covent",
+                "src": "images/gastronomia/pizza-mediterranea-tabla.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_pizzas_2",
+                "title": "Pizza Serrana con Paleta Ibérica",
+                "desc": "Virutas finas de jamón ibérico, pimiento verde confitado y bacon ahumado",
+                "badge": "Ibérico Selecto",
+                "src": "images/gastronomia/pizza-serrana-iberica.jpg",
+                "backup": null
+            }
+        ],
+        "platos": [
+            {
+                "id": "ref_platos_1",
+                "title": "Nº 2 · Lomo Plancha, Huevo & Croquetas",
+                "desc": "Lomo tierno, huevo de corral, croquetas artesanas, ensalada y patatas",
+                "badge": "Clásico Nº 2",
+                "src": "images/gastronomia/plato-lomo-croquetas-huevo.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_platos_2",
+                "title": "Nº 5 · Pechugas de Pollo & Croquetas",
+                "desc": "Pechugas jugosas con bechamel casera crujiente y guarnición de la huerta",
+                "badge": "Favorito Nº 5",
+                "src": "images/gastronomia/plato-pechugas-croquetas.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_platos_3",
+                "title": "Nº 3 · Filete de Ternera con Piquillos",
+                "desc": "Ternera lechal sellada con pimientos rojos asados y ensalada fresca",
+                "badge": "Ternera Tierna",
+                "src": "images/gastronomia/plato-filete-piquillos.jpg",
+                "backup": null
+            },
+            {
+                "id": "ref_platos_4",
+                "title": "Nº 7 · Doble Hamburguesa & Huevos",
+                "desc": "2 carnes a la plancha, huevo frito con puntilla, bacon y croquetas",
+                "badge": "Completo Nº 7",
+                "src": "images/gastronomia/plato-hamburguesas-huevos.webp",
+                "backup": null
+            }
+        ],
+        "bocatas-sandwiches": [
+            {
+                "id": "ref_bocatas_1",
+                "title": "Sándwich Indautxu con Tortilla",
+                "desc": "Pan tostado, tortilla francesa, bacon crujiente, queso fundido y cebolla potxada",
+                "badge": "Especial Indautxu",
+                "src": "images/gastronomia/sandwich-indautxu-tortilla.jpg",
+                "backup": null
+            },
+            {
+                "id": "ref_bocatas_2",
+                "title": "Sándwich Athletic Zurigorri",
+                "desc": "Pollo a la plancha, paletilla ibérica curada, queso y mayonesa suave",
+                "badge": "Zurigorri",
+                "src": "images/gastronomia/sandwich-especial-doble.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_bocatas_3",
+                "title": "Bocadillos Rústicos en Barra",
+                "desc": "Pan crujiente recién horneado con rellenos generosos de calidad",
+                "badge": "Barra Covent",
+                "src": "images/gastronomia/barra-bocadillos-perspectiva.jpg",
+                "backup": null
+            }
+        ],
+        "ensaladas": [
+            {
+                "id": "ref_ensaladas_1",
+                "title": "Ensalada Rulo de Cabra Caramelizado",
+                "desc": "Medallones a la plancha, piña, nueces y vinagreta casera de miel y mostaza",
+                "badge": "Queso de Cabra",
+                "src": "images/gastronomia/ensalada-rulo-cabra.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_ensaladas_2",
+                "title": "Ensalada Templada de Setas e Ibérico",
+                "desc": "Salteado con ajitos, lonchas finas de paleta ibérica y hojas verdes",
+                "badge": "Setas & Paletilla",
+                "src": "images/gastronomia/ensalada-setas-iberico.webp",
+                "backup": null
+            },
+            {
+                "id": "ref_ensaladas_3",
+                "title": "Ensalada Templada Gourmet",
+                "desc": "Láminas de carne sellada, nueces tostadas y reducción balsámica de Módena",
+                "badge": "Gourmet",
+                "src": "images/gastronomia/ensalada-templada-gourmet.jpg",
+                "backup": null
+            }
+        ]
+    }
+}

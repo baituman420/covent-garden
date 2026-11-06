@@ -1,0 +1,5 @@
+# Covent Garden Bilbao · Entorno Privado Beta (https://beta.coventgardenbilbao.es)
+# Se prohíbe la indexación completa en motores de búsqueda durante la fase de sustitución de fotos.
+
+User-agent: *
+Disallow: /

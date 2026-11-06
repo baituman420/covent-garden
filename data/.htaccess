@@ -1,0 +1,25 @@
+# ==============================================================================
+# Covent Garden Bilbao · Protección de Directorio de Datos (/data)
+# ==============================================================================
+
+# 1. Bloquear por defecto todos los archivos ocultos (.rate_limit.json), temporales o scripts
+<FilesMatch "(^\..*|\.(php|phtml|cgi|pl|py|sh|bash|ini|log|bak|lock))$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 2. Permitir lectura pública única y exclusivamente de media.json
+<Files "media.json">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+</Files>

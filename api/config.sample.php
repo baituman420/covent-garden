@@ -15,7 +15,7 @@ return [
 
     // Destinatario principal de las solicitudes de grupos y reservados
     'contact' => [
-        'recipient_email' => 'info@coventgardenbilbao.eus', // Pendiente de confirmación con Josu
+        'recipient_email' => 'admin@coventgardenbilbao.es', // Buzón oficial y de privacidad de Bilbocover S.L.
         'recipient_name'  => 'Josu - Covent Garden Bilbao',
         'subject_prefix'  => '[Covent Garden Web - Solicitud de Grupo] ',
     ],
@@ -38,8 +38,9 @@ return [
         'rate_limit_seconds'  => 600, // 10 minutos
         'max_requests_per_ip' => 5,
         'allowed_origins'     => [
+            'https://coventgardenbilbao.es',
+            'https://beta.coventgardenbilbao.es',
             'https://baituman420.github.io',
-            'https://coventgardenbilbao.eus',
             'http://localhost:5173',
             'http://localhost:3000',
         ],
