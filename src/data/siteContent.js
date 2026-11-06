@@ -858,39 +858,72 @@ export const galleryContent = {
   ],
 };
 
-export const comerBeberContent = {
-  tag: "Comer & Beber en Covent",
-  title: "Gastronomía viva en Doctor Areilza",
-  description: "De las rabas y el marianito del mediodía a las hamburguesas smash, raciones abundantes y pizzas al horno de la cena.",
-  mainImage: {
-    src: "images/gastronomia/rabas-crujientes.jpg",
-    alt: "Ración de rabas doradas crujientes de Covent Garden",
-    badge: "Rabas & Marianitos",
+export const barraPintxosContent = {
+  tag: "LA BARRA DE COVENT",
+  title: "La barra de Covent",
+  subtitle: "Pintxos, barra y tradición en Doctor Areilza",
+  description: "El mostrador de madera noble de Indautxu donde conviven los pintxos clásicos, la tortilla jugosa y el picoteo tabernero de cada jornada.",
+  backgroundImage: {
+    key: "barra_fondo",
+    src: "images/barra/barra-fondo-covent.jpg",
+    alt: "Barra tradicional de madera noble y tiradores de Covent Garden Bilbao",
   },
-  overlayImage: {
-    src: "images/gastronomia/burger-smash-bacon.webp",
-    alt: "Hamburguesa smash artesana con bacon y queso",
-    title: "Smash Covent",
-    desc: "Doble carne y salsa especial",
-  },
-  categories: [
+  items: [
     {
+      id: "pintxo-tradicional",
+      key: "pintxo_barra_1",
       number: "01",
-      title: "El Aperitivo de Indautxu",
-      desc: "Rabas doradas crujientes y marianitos preparados con receta de la casa.",
+      name: "Pintxo Tradicional",
+      desc: "Gilda y combinación de barra clásica",
+      src: "images/barra/pintxo-tradicional-gilda.jpg",
+      alt: "Pintxo tradicional montado en barra de madera de Covent Garden",
+      badge: "Clásico de Barra",
     },
     {
+      id: "tortilla-patata",
+      key: "pintxo_barra_2",
       number: "02",
-      title: "Smash Burgers & Raciones",
-      desc: "Patatas 6 salsas, croquetas de la amama, carnes smash y combinados abundantes.",
+      name: "Tortilla de Patata",
+      desc: "Pintxo clásico de la barra de Indautxu",
+      src: "images/barra/pintxo-tortilla-patata.jpg",
+      alt: "Pintxo de tortilla de patata tradicional",
+      badge: "Recién Salida",
     },
     {
+      id: "mostrador-dia",
+      key: "pintxo_barra_3",
       number: "03",
-      title: "Pizzas, Bocatas & Sándwiches",
-      desc: "Horneados en tabla de madera y panes crujientes preparados al instante con bebida incluida.",
+      name: "Mostrador del Día",
+      desc: "Variedad dispuesta a diario en la barra",
+      src: "images/barra/barra-pintxos-variada.webp",
+      alt: "Selección variada de pintxos en la vitrina de barra",
+      badge: "Selección Diaria",
+    },
+    {
+      id: "rabas-casa",
+      key: "pintxo_barra_4",
+      number: "04",
+      name: "Rabas de la Casa",
+      desc: "Ración de picoteo tabernero tradicional",
+      src: "images/barra/pintxo-rabas-crujientes.jpg",
+      alt: "Ración de rabas crujientes doradas al limón",
+      badge: "Picoteo Tabernero",
+    },
+    {
+      id: "bocados-barra",
+      key: "pintxo_barra_5",
+      number: "05",
+      name: "Bocados de Barra",
+      desc: "Especialidades y tostas calientes de la casa",
+      src: "images/barra/barra-pintxos-bocados.jpg",
+      alt: "Bocaditos y especialidades calientes de barra",
+      badge: "Especialidad Caliente",
     },
   ],
 };
+
+// Alias de retrocompatibilidad por si se referencia en otras vistas
+export const comerBeberContent = barraPintxosContent;
 
 export const locationContent = {
   instagramBlock: {

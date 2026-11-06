@@ -1,5 +1,5 @@
 {
-    "version": 1793882570,
+    "version": 1793969059446,
     "singleImages": {
         "hero_fachada": {
             "id": "hero_fachada",
@@ -44,6 +44,60 @@
             "current": "images/pub/corner-gin-bombay.webp",
             "default": "images/pub/corner-gin-bombay.webp",
             "recommended": "Vertical o Cuadrada (aprox. 800x1000)",
+            "backup": null
+        },
+        "barra_fondo": {
+            "id": "barra_fondo",
+            "section": "La Barra de Covent",
+            "label": "Fondo de la Barra (Panorámica)",
+            "current": "images/barra/barra-fondo-covent.jpg",
+            "default": "images/barra/barra-fondo-covent.jpg",
+            "recommended": "Horizontal panorámica (aprox. 1600x900)",
+            "backup": null
+        },
+        "pintxo_barra_1": {
+            "id": "pintxo_barra_1",
+            "section": "La Barra de Covent",
+            "label": "Pintxo 1 · Pintxo Tradicional",
+            "current": "images/barra/pintxo-tradicional-gilda.jpg",
+            "default": "images/barra/pintxo-tradicional-gilda.jpg",
+            "recommended": "Cuadrada o vertical (aprox. 1200x1200)",
+            "backup": null
+        },
+        "pintxo_barra_2": {
+            "id": "pintxo_barra_2",
+            "section": "La Barra de Covent",
+            "label": "Pintxo 2 · Tortilla de Patata",
+            "current": "images/barra/pintxo-tortilla-patata.jpg",
+            "default": "images/barra/pintxo-tortilla-patata.jpg",
+            "recommended": "Cuadrada o vertical (aprox. 1200x1200)",
+            "backup": null
+        },
+        "pintxo_barra_3": {
+            "id": "pintxo_barra_3",
+            "section": "La Barra de Covent",
+            "label": "Pintxo 3 · Mostrador del Día",
+            "current": "images/barra/barra-pintxos-variada.webp",
+            "default": "images/barra/barra-pintxos-variada.webp",
+            "recommended": "Cuadrada o vertical (aprox. 1200x1200)",
+            "backup": null
+        },
+        "pintxo_barra_4": {
+            "id": "pintxo_barra_4",
+            "section": "La Barra de Covent",
+            "label": "Pintxo 4 · Rabas de la Casa",
+            "current": "images/barra/pintxo-rabas-crujientes.jpg",
+            "default": "images/barra/pintxo-rabas-crujientes.jpg",
+            "recommended": "Cuadrada o vertical (aprox. 1200x1200)",
+            "backup": null
+        },
+        "pintxo_barra_5": {
+            "id": "pintxo_barra_5",
+            "section": "La Barra de Covent",
+            "label": "Pintxo 5 · Bocados de Barra",
+            "current": "images/barra/barra-pintxos-bocados.jpg",
+            "default": "images/barra/barra-pintxos-bocados.jpg",
+            "recommended": "Cuadrada o vertical (aprox. 1200x1200)",
             "backup": null
         },
         "especialidad_rabas": {

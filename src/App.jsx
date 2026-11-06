@@ -9,7 +9,7 @@ import Especialidades from './components/Especialidades.jsx';
 import Athletic from './components/Athletic.jsx';
 import GruposBloque from './components/GruposBloque.jsx';
 import Barra from './components/Barra.jsx';
-import ComerBeber from './components/ComerBeber.jsx';
+import BarraPintxos from './components/BarraPintxos.jsx';
 import Galeria from './components/Galeria.jsx';
 import InstagramLocation from './components/InstagramLocation.jsx';
 import Footer from './components/Footer.jsx';
@@ -27,7 +27,7 @@ export default function App() {
         <Athletic />
         <GruposBloque />
         <Barra />
-        <ComerBeber />
+        <BarraPintxos />
         <Galeria />
         <InstagramLocation />
       </main>

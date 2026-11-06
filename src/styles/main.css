@@ -4415,4 +4415,69 @@ section[id] {
   }
 }
 
+/* ==============================================================================
+   La Barra de Covent & Pintxos (Carrusel 3D con Perspectiva Cilíndrica)
+   ============================================================================== */
+.barra-pintxos-section {
+  position: relative;
+  background-color: #120e0b;
+}
+
+.barra-carousel-viewport {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+}
+
+.barra-carousel-track {
+  transform-style: preserve-3d;
+}
+
+.pintxo-3d-card {
+  transform-origin: center center;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  touch-action: pan-y;
+}
+
+.pintxo-3d-card:hover {
+  border-color: var(--color-brass) !important;
+}
+
+.pintxo-3d-card:hover img {
+  transform: scale(1.04);
+}
+
+.barra-nav-btn:hover:not(:disabled) {
+  background-color: rgba(247, 188, 96, 0.15) !important;
+  color: #ffffff !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barra-carousel-viewport {
+    perspective: none !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    display: flex !important;
+    gap: 1.5rem !important;
+    padding: 1rem 0 !important;
+    height: auto !important;
+  }
+  .barra-carousel-track {
+    display: flex !important;
+    gap: 1.5rem !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  .pintxo-3d-card {
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    scroll-snap-align: center !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+
 
